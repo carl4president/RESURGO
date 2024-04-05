@@ -10,7 +10,7 @@
                 <ul>
                     <li><img src="img/location.png" alt="">Guimba, Nueva Ecija 3115 Guimba Central Luzon</li>
                     <li><img src="img/telephone.png" alt="">(044) 364 7186</li>
-                    <li><img src="img/mail.png" alt="">olshco1947@yahoo.com.ph</li>
+                    <li><img src="img/mail.png" alt="">olshco1947@gmail.com.ph</li>
                 </ul>
             </div>
         </div>
@@ -27,7 +27,7 @@
         </section>
         
       <section id="copyright">
-         <h4>Copyright © 2023 Our Lady of the Sacred Heart College of Guimba, Inc. • All Rights Reserved</h4>
+         <h4>Copyright © 2024 Our Lady of the Sacred Heart College of Guimba, Inc. • All Rights Reserved</h4>
       </section>
     </footer>
     <script type="text/javascript">
