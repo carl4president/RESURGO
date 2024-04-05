@@ -17,14 +17,21 @@ include 'header.php';
     <section id="mission-vision">
         <div class="mission">
            <h2>OUR MISSION</h2>
-           <p>Inspired by and devoted to the oneness of Heart of Jesus and Mary, OLSHCO is committed to: <br> 1. Develop among students modern world skills for them to succeedas empowered global citizens; and <br> 2. Nurture a learning environment that proclaims and models values of human integrity. </p>
+            
+           <p>Inspired by and devoted to the oneness of Heart of Jesus and Mary, OLSHCO is committed to: 
+               <br> 1. Develop among students modern world skills for them to succeedas empowered global citizens; and 
+               <br> 2. Nurture a learning environment that proclaims and models values of human integrity.
+           </p>
+            
         </div>
         <div class="vision">
           <h2>OUR VISION</h2>
-          <p>A diocesan catholic school communitythat is founded on the oneness of Heart of Jesus and Mary and passionate in the communalworkofintegralhuman development of young towards the fullness of life.</p>
+          <p>A diocesan catholic school communitythat is founded on the oneness of Heart of Jesus and Mary and passionate in the communalworkofintegralhuman development of young towards the fullness of life.
+          </p>
         </div>
     </section>
     <section id="core-values" class="section-p1">
+        
         <h2>CORE VALUES</h2>
          <div class="box-container">
             <div class="box">
