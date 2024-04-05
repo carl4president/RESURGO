@@ -163,7 +163,7 @@ include 'includes/conn.php';
         </section>
         
       <section id="copyright">
-         <h4>Copyright © 2023 Our Lady of the Sacred Heart College of Guimba, Inc. • All Rights Reserved</h4>
+         <h4>Copyright © 2024 Our Lady of the Sacred Heart College of Guimba, Inc. • All Rights Reserved</h4>
       </section>
     </footer>
     <script>
