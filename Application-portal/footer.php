@@ -27,7 +27,7 @@
         </section>
         
       <section id="copyright">
-         <h4>Copyright © 2024 Our Lady of the Sacred Heart College of Guimba, Inc. • All Rights Reserved</h4>
+         <h4>Copyright © 2024 Our Lady of the Sacred Heart College of Guimba, Inc. • Created by RESURGO Developers • All Rights Reserved</h4>
       </section>
     </footer>
     <script type="text/javascript">
