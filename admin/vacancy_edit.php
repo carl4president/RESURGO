@@ -7,6 +7,7 @@ if (isset($_POST['edit'])) {
     $position = $_POST['position'];
     $availability = $_POST['availability'];
     $status = $_POST['status'];
+    $details = $_POST['details'];
     $description = $_POST['description'];
 
 
@@ -15,6 +16,7 @@ if (isset($_POST['edit'])) {
             position = ?,
             availability = ?,
             status = ?,
+            details = ?,
             description = ?
             WHERE id = ?";
 
@@ -22,7 +24,7 @@ if (isset($_POST['edit'])) {
 
     if ($stmt) {
         
-        mysqli_stmt_bind_param($stmt, "ssssi", $position, $availability, $status, $description, $id);
+        mysqli_stmt_bind_param($stmt, "sssssi", $position, $availability, $status, $details, $description, $id);
 
         
         $result = mysqli_stmt_execute($stmt);

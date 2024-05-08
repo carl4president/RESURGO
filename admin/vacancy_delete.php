@@ -3,8 +3,10 @@
 
 	if(isset($_POST['delete'])){
 		$id = $_POST['id'];
-		$sql = "DELETE FROM vacancy WHERE id = '$id'";
-		if($conn->query($sql)){
+		$sql = "DELETE FROM vacancy WHERE id = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("i", $id);
+		if($stmt->execute()){
 			$_SESSION['success'] = 'Vacancy deleted successfully';
 		}
 		else{

@@ -8,7 +8,7 @@
         </div>
         <div class="pull-left info">
           <p><?php echo $user['firstname'].' '.$user['lastname']; ?></p>
-          <a><i class="fa fa-circle text-success"></i> Online</a>
+          <a> ADMINISTRATOR</a>
         </div>
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -44,6 +44,7 @@
           <ul class="treeview-menu">
           <li><a href="attendance.php"><i class="fa fa-circle-o"></i><span>Attendance</span></a></li>
           <li><a href="leave.php"><i class="fa fa-circle-o"></i><span>Leave Request</span></a></li>
+          <li><a href="leave_cancelled.php"><i class="fa fa-circle-o"></i><span>Leave Cancelled</span></a></li>
           <li><a href="leave_accepted.php"><i class="fa fa-circle-o"></i><span>Leave Accepted</span></a></li> 
           <li><a href="leave_rejected.php"><i class="fa fa-circle-o"></i><span>Leave Rejected</span></a></li>   
           </ul>

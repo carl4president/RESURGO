@@ -56,17 +56,21 @@
                   <th>Date</th>
                   <th>Employee ID</th>
                   <th>Name</th>
-                  <th>Time In</th>
-                  <th>Time Out</th>
+                  <th>Time In (AM)</th>
+                  <th>Time Out (AM)</th>
+                  <th>Time In (PM)</th>
+                  <th>Time Out (PM)</th>
                   <th>Tools</th>
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT *, employees.employee_id AS empid, attendance.id AS attid FROM attendance LEFT JOIN employees ON employees.employee_id=attendance.employee_id ORDER BY attendance.date DESC, attendance.time_in DESC";
+                    $sql = "SELECT *, employees.employee_id AS empid, attendance.id AS attid FROM attendance LEFT JOIN employees ON employees.employee_id=attendance.employee_id ORDER BY attendance.date DESC, attendance.time_in_AM DESC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
-                      $status = ($row['status'])?'<span class="label label-warning pull-right">ontime</span>':'<span class="label label-danger pull-right">late</span>';
-                      $overtime_status = ($row['overtime_status'])?'<span class="label label-danger pull-right">overtime</span>':'<span class="label label-warning pull-right">timed out ontime</span>';
+                      $time_in_am_status = ($row['time_in_AM_status'])?'<span class="label label-warning pull-right">ontime</span>':'<span class="label label-danger pull-right">late</span>';
+                      $time_out_am_status = ($row['time_out_AM_status'])?'<span class="label label-danger pull-right">overtime</span>':'<span class="label label-warning pull-right">timed out ontime</span>';
+                      $time_in_pm_status = ($row['time_in_PM_status'])?'<span class="label label-warning pull-right">ontime</span>':'<span class="label label-danger pull-right">late</span>';
+                      $time_out_pm_status = ($row['time_out_PM_status'])?'<span class="label label-danger pull-right">overtime</span>':'<span class="label label-warning pull-right">timed out ontime</span>';
 
                       echo "
                         <tr>
@@ -74,8 +78,10 @@
                           <td>".date('M d, Y', strtotime($row['date']))."</td>
                           <td>".$row['empid']."</td>
                           <td>".$row['firstname'].' '.$row['lastname']."</td>
-                          <td>".date('h:i A', strtotime($row['time_in'])).$status."</td>
-                          <td>".date('h:i A', strtotime($row['time_out'])).$overtime_status."</td>
+                          <td>".date('h:i A', strtotime($row['time_in_AM'])).$time_in_am_status."</td>
+                          <td>".date('h:i A', strtotime($row['time_out_AM'])).$time_out_am_status."</td>
+                          <td>".date('h:i A', strtotime($row['time_in_PM'])).$time_in_pm_status."</td>
+                          <td>".date('h:i A', strtotime($row['time_out_PM'])).$time_out_pm_status."</td>
                           <td>
                           <div class='btn-group'>
                           <button type='button' class='btn btn-primary'>Action</button>
@@ -131,8 +137,10 @@ function getRow(id){
     success: function(response){
       $('#datepicker_edit').val(response.date);
       $('#attendance_date').html(response.date);
-      $('#edit_time_in').val(response.time_in);
-      $('#edit_time_out').val(response.time_out);
+      $('#edit_time_in_am').val(response.time_in_AM);
+      $('#edit_time_out_am').val(response.time_out_AM);
+      $('#edit_time_in_pm').val(response.time_in_PM);
+      $('#edit_time_out_pm').val(response.time_out_PM);
       $('#attid').val(response.attid);
       $('#employee_name').html(response.firstname+' '+response.lastname);
       $('#del_attid').val(response.attid);

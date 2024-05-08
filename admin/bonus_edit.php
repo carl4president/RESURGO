@@ -6,9 +6,11 @@
 		$description = $_POST['description'];
         $date_bonus = $_POST['edit_date_bonus'];
 		
-		$sql = "UPDATE employee_bonus SET date_bonus = '$date_bonus', bonus_id = '$description' WHERE id = '$id'";
-		if($conn->query($sql)){
-			$_SESSION['success'] = 'Emoloyee Bonus updated successfully';
+		$sql = "UPDATE employee_bonus SET date_bonus = ?, bonus_id = ? WHERE id = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("ssi", $date_bonus, $description, $id);
+		if($stmt->execute()){
+			$_SESSION['success'] = 'Employee Bonus updated successfully';
 		}
 		else{
 			$_SESSION['error'] = $conn->error;
@@ -19,5 +21,4 @@
 	}
 
 	header('location:bonus.php');
-
 ?>

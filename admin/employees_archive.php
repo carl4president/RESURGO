@@ -23,17 +23,19 @@ if (isset($_POST['delete'])) {
     
 
     
-    $sql = "INSERT INTO employees_archive (id, employee_id, firstname, middlename, lastname, email, gender, contact_info, position_id, address, birthdate, schedule_id, hire_date, username, password, photo) 
-            VALUES ('$id', '$employee_id', '$firstname', '$middlename', '$lastname', '$email', '$gender', '$phone', '$position_id', '$address', '$birthdate', '$schedule_id', '$hire_date', '$username', '$password', '$photo')";
-
-            $resultInsert = $conn->query($sql);
-
-            
-            $sqlDelete = "DELETE FROM employees WHERE id = $id";
-            $resultDelete = $conn->query($sqlDelete);
-
-            
-            if ($resultInsert && $resultDelete) {
+        $sql = "INSERT INTO employees_archive (id, employee_id, firstname, middlename, lastname, email, gender, contact_info, position_id, address, birthdate, schedule_id, hire_date, username, password, photo) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isssssssississss", $id, $employee_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $address, $birthdate, $schedule_id, $hire_date, $username, $password, $photo);
+        $stmt->execute();
+    
+        $sqlDelete = "DELETE FROM employees WHERE id = ?";
+        $stmtDelete = $conn->prepare($sqlDelete);
+        $stmtDelete->bind_param("i", $id);
+        $stmtDelete->execute();
+    
+        if ($stmt->affected_rows > 0 && $stmtDelete->affected_rows > 0) {
                   
                 $_SESSION['success'] = 'Employee Record archived successfully!';
                 header("Location: employee.php");
@@ -68,16 +70,18 @@ elseif (isset($_POST['retrieve'])) {
 
     
     $sql = "INSERT INTO employees (id, employee_id, firstname, middlename, lastname, email, gender, contact_info, position_id, address, birthdate, schedule_id, hire_date, username, password, photo) 
-            VALUES ('$id', '$employee_id', '$firstname', '$middlename', '$lastname', '$email', '$gender', '$phone', '$position_id', '$address', '$birthdate', '$schedule_id', '$hire_date', '$username', '$password', '$photo')";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            $resultInsert = $conn->query($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isssssssississss", $id, $employee_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $address, $birthdate, $schedule_id, $hire_date, $username, $password, $photo);
+    $stmt->execute();
 
-            
-            $sqlDelete = "DELETE FROM employees_archive WHERE id = $id";
-            $resultDelete = $conn->query($sqlDelete);
+    $sqlDelete = "DELETE FROM employees_archive WHERE id = ?";
+    $stmtDelete = $conn->prepare($sqlDelete);
+    $stmtDelete->bind_param("i", $id);
+    $stmtDelete->execute();
 
-            
-            if ($resultInsert && $resultDelete) {
+    if ($stmt->affected_rows > 0 && $stmtDelete->affected_rows > 0) {
                   
                 $_SESSION['success'] = 'Employee Record retrieved successfully!';
                 header("Location: employee_archive.php");

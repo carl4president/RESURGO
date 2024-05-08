@@ -3,7 +3,7 @@ include 'includes/session.php';
 
 if (isset($_POST['edit'])) {
     
-    $id = $_POST['id'];
+   $id = $_POST['id'];
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
@@ -15,31 +15,34 @@ if (isset($_POST['edit'])) {
     $position = $_POST['position'];
     $schedule = $_POST['schedule'];
 
-    
-
     echo "Received ID: $id<br>";
 
-    
     $sql = "UPDATE employees SET
-            firstname = '$firstname',
-            middlename = '$middlename',
-            lastname = '$lastname',
-            address = '$address',
-            birthdate = '$birthdate',
-            contact_info = '$contact',
-            email = '$email',
-            gender = '$gender',
-            position_id = '$position',
-            schedule_id = '$schedule'
-            WHERE id = '$id'";
+            firstname = ?,
+            middlename = ?,
+            lastname = ?,
+            address = ?,
+            birthdate = ?,
+            contact_info = ?,
+            email = ?,
+            gender = ?,
+            position_id = ?,
+            schedule_id = ?
+            WHERE id = ?";
 
-    if ($conn->query($sql) === TRUE) {
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssssssiii", $firstname, $middlename, $lastname, $address, $birthdate, $contact, $email, $gender, $position, $schedule, $id);
+
+    if ($stmt->execute()) {
         $_SESSION['success'] = 'Employee information updated successfully';
     } else {
         $_SESSION['error'] = 'Error updating employee information: ' . $conn->error;
     }
 
-    header('location: employee.php'); 
+    $stmt->close();
+    $conn->close();
+
+    header('location: employee.php');
 } else {
     $_SESSION['error'] = 'Invalid request';
     header('location: employee.php'); 

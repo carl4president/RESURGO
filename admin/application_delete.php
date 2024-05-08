@@ -53,9 +53,15 @@ if (isset($_POST['delete'])) {
         $_SESSION['success'] = 'Application Deleted email has been sent successfully!';
 
 
-        $delete_sql = "DELETE FROM application WHERE id = '$record_id'";
+        $delete_sql = "DELETE FROM application WHERE id = ?";
 
-        if ($conn->query($delete_sql)) {
+        $stmt = $conn->prepare($delete_sql);
+        
+        $stmt->bind_param("i", $record_id);
+        
+        $stmt->execute();
+        
+        if ($stmt->affected_rows > 0) {
             
             echo "Record deleted successfully.";
         } else {

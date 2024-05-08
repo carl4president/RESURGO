@@ -100,7 +100,7 @@
                           $query = $conn->query($sql);
                           while($srow = $query->fetch_assoc()){
                             echo "
-                              <option value='".$srow['id']."'>".$srow['time_in'].' - '.$srow['time_out']."</option>
+                              <option value='".$srow['id']."'>".$srow['time_in_AM'].' - '.$srow['time_out_AM'].' , '.$srow['time_in_PM'].' - '.$srow['time_out_PM']."</option>
                             ";
                           }
                         ?>
@@ -184,7 +184,7 @@
                     <label for="email_val" class="col-sm-3 control-label">Email</label>
 
                     <div class="col-sm-9">
-                    <input type="email" class="form-control"" name="email" id="email_val">
+                    <input type="email" class="form-control" name="email" id="email_val">
                     </div>
                 </div>
                 <div class="form-group">
@@ -225,7 +225,7 @@
                           $query = $conn->query($sql);
                           while($srow = $query->fetch_assoc()){
                             echo "
-                              <option value='".$srow['id']."'>".$srow['time_in'].' - '.$srow['time_out']."</option>
+                              <option value='".$srow['id']."'>".$srow['time_in_AM'].' - '.$srow['time_out_AM'].' , '.$srow['time_in_PM'].' - '.$srow['time_out_PM']."</option>
                             ";
                           }
                         ?>
@@ -344,7 +344,16 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
+        $(document).ready(function() {
+            $('#datepicker_add_birthdate').keydown(function(event) {
+                event.preventDefault(); // Prevent keyboard input
+            })
+    
+            $('#datepicker_edit_birthdate').keydown(function(event) {
+                event.preventDefault(); // Prevent keyboard input
+            })
 
         function validateContactInput(inputElement) {
                 const inputValue = inputElement.value;
@@ -391,4 +400,5 @@
 
                 return true;
                 }
+        });
 </script>

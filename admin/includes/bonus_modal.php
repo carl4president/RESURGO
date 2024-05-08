@@ -156,7 +156,17 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
+$(document).ready(function() {
+        $('#datepicker_add').keydown(function(event) {
+        event.preventDefault(); 
+        })
+        
+        $('#datepicker_edit').keydown(function(event) {
+        event.preventDefault(); 
+        })
+    });
 
 document.getElementById('description').addEventListener('change', function() {
     var selectedOption = this.options[this.selectedIndex];
@@ -172,5 +182,7 @@ document.getElementById('description').addEventListener('change', function() {
     }
 });
 </script>
+
+
 
      

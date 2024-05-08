@@ -58,11 +58,13 @@
           <div class="small-box bg-primary">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM application";
-                $query = $conn->query($sql);
+                    $sql = "SELECT * FROM application";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $stmt->store_result();
+                    echo "<h3>".$stmt->num_rows."</h3>";
+                ?>
 
-                echo "<h3>".$query->num_rows."</h3>";
-              ?>
 
               <p>Total Applications</p>
             </div>
@@ -96,10 +98,12 @@
           <div class="small-box bg-purple">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM vacancy";
-                $query = $conn->query($sql);
+                $stmt = $conn->prepare("SELECT * FROM vacancy");
+                $stmt->execute();
+                
+                $stmt->store_result();
+                echo "<h3>".$stmt->num_rows."</h3>";
 
-                echo "<h3>".$query->num_rows."</h3>";
               ?>
 
               <p>Total Job Positions</p>
@@ -114,12 +118,15 @@
           <!-- small box -->
           <div class="small-box bg-teal">
             <div class="inner">
-              <?php
+           <?php
                 $sql = "SELECT * FROM leave_requests";
-                $query = $conn->query($sql);
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            
+                echo "<h3>".$result->num_rows."</h3>";
+            ?>
 
-                echo "<h3>".$query->num_rows."</h3>";
-              ?>
 
               <p>Total Leave Requests</p>
             </div>
@@ -156,18 +163,27 @@
           <div class="small-box bg-green">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM attendance";
-                $query = $conn->query($sql);
-                $total = $query->num_rows;
-
-                $sql = "SELECT * FROM attendance WHERE status = 1";
-                $query = $conn->query($sql);
-                $early = $query->num_rows;
+                    $sql = "SELECT COUNT(*) AS total FROM attendance";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $stmt->bind_result($total);
+                    $stmt->fetch();
+                    $stmt->close();
                 
-                $percentage = ($early/$total)*100;
+                    $sql = "SELECT COUNT(*) AS early FROM attendance WHERE time_in_AM_status = ?";
+                    $stmt = $conn->prepare($sql);
+                    $status = 1;
+                    $stmt->bind_param("i", $status);
+                    $stmt->execute();
+                    $stmt->bind_result($early);
+                    $stmt->fetch();
+                    $stmt->close();
+                
+                    $percentage = ($early/$total)*100;
+                
+                    echo "<h3>".number_format($percentage, 2)."<sup style='font-size: 20px'>%</sup></h3>";
+                ?>
 
-                echo "<h3>".number_format($percentage, 2)."<sup style='font-size: 20px'>%</sup></h3>";
-              ?>
           
               <p>On Time Percentage</p>
             </div>
@@ -183,10 +199,13 @@
           <div class="small-box bg-yellow">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM attendance WHERE date = '$today' AND status = 1";
-                $query = $conn->query($sql);
+                    $sql = "SELECT * FROM attendance WHERE date = ? AND time_in_AM_status = 1";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $today);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    echo "<h3>" . $result->num_rows . "</h3>";
 
-                echo "<h3>".$query->num_rows."</h3>"
               ?>
              
               <p>On Time Today</p>
@@ -202,12 +221,16 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <?php
-                $sql = "SELECT * FROM attendance WHERE date = '$today' AND status = 0";
-                $query = $conn->query($sql);
+                <?php
+                $stmt = $conn->prepare("SELECT * FROM attendance WHERE date = ? AND time_in_AM_status = ?");
+                $stmt->bind_param("si", $today, $status);
+                $today = date("Y-m-d");
+                $status = 0;
+                $stmt->execute();
+                $result = $stmt->get_result();
+                echo "<h3>".$result->num_rows."</h3>";
+                ?>
 
-                echo "<h3>".$query->num_rows."</h3>"
-              ?>
 
               <p>Late Today</p>
             </div>
@@ -269,17 +292,24 @@
   $ontime = array();
   $late = array();
   for( $m = 1; $m <= 12; $m++ ) {
-    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND status = 1 $and";
-    $oquery = $conn->query($sql);
+    $sql = "SELECT * FROM attendance WHERE MONTH(date) = ? AND time_in_AM_status = 1 $and";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $m);
+    $stmt->execute();
+    $oquery = $stmt->get_result();
     array_push($ontime, $oquery->num_rows);
-
-    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND status = 0 $and";
-    $lquery = $conn->query($sql);
+    
+    $sql = "SELECT * FROM attendance WHERE MONTH(date) = ? AND time_in_AM_status = 0 $and";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $m);
+    $stmt->execute();
+    $lquery = $stmt->get_result();
     array_push($late, $lquery->num_rows);
-
-    $num = str_pad( $m, 2, 0, STR_PAD_LEFT );
-    $month =  date('M', mktime(0, 0, 0, $m, 1));
+    
+    $num = str_pad($m, 2, 0, STR_PAD_LEFT);
+    $month = date('M', mktime(0, 0, 0, $m, 1));
     array_push($months, $month);
+
   }
 
   $months = json_encode($months);

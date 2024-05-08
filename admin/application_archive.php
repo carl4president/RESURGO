@@ -62,23 +62,22 @@ if (isset($_POST['delete'])) {
         $mail->send();
         $_SESSION['success'] = 'Application Deleted email has been sent successfully!';
 
-    $insertQuery = "INSERT INTO application_archive 
-                    (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
-                    VALUES ('$id', '$applicant_id', '$firstname', '$middlename', '$lastname', '$email', '$gender', '$phone', '$position_id', '$street_address', '$city', '$state_province', '$postal_zip_code', '$birthdate', '$resume')";
-
-    
-    $insertResult = mysqli_query($conn, $insertQuery);
-
-    
-    if ($insertResult) {
-        $_SESSION['success'] = 'Applicant Application Record archived successfully!';
+        $insertQuery = "INSERT INTO application_archive 
+                        (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
+        $stmt = mysqli_prepare($conn, $insertQuery);
         
-        $deleteQuery = "DELETE FROM application WHERE id = '$id'";
+        mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id, $applicant_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $street_address, $city, $state_province, $postal_zip_code, $birthdate, $resume);
         
+        $insertResult = mysqli_stmt_execute($stmt);
         
-        $deleteResult = mysqli_query($conn, $deleteQuery);
-
+        if ($insertResult) {
+         $_SESSION['success'] = 'Applicant Application Record archived successfully!';
+        
+        $stmt = $conn->prepare("DELETE FROM application WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $deleteResult = $stmt->execute();
         
         if ($deleteResult) {
             echo " Record deleted from applications table.";
@@ -114,25 +113,27 @@ if (isset($_POST['delete'])) {
     $birthdate = $_POST['birthdate'];
     $resume = $_POST['resume'];
 
-    $insertQuery = "INSERT INTO application 
-                    (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
-                    VALUES ('$id', '$applicant_id', '$firstname', '$middlename', '$lastname', '$email', '$gender', '$phone', '$position_id', '$street_address', '$city', '$state_province', '$postal_zip_code', '$birthdate', '$resume')";
+        $insertQuery = "INSERT INTO application 
+                (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    
-    $insertResult = mysqli_query($conn, $insertQuery);
+        $stmt = mysqli_prepare($conn, $insertQuery);
+        mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id, $applicant_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $street_address, $city, $state_province, $postal_zip_code, $birthdate, $resume);
+        
+        $insertResult = mysqli_stmt_execute($stmt);
+        
+        if ($insertResult) {
 
-    
-    if ($insertResult) {
         $_SESSION['success'] = 'Applicant Application Record retrieved successfully!';
         
         
-        $deleteQuery = "DELETE FROM application_archive WHERE id = '$id'";
-        
-        
-        $deleteResult = mysqli_query($conn, $deleteQuery);
-
-        
+        $deleteQuery = "DELETE FROM application_archive WHERE id = ?";
+        $statement = mysqli_prepare($conn, $deleteQuery);
+        mysqli_stmt_bind_param($statement, "s", $id);
+        mysqli_stmt_execute($statement);
+        $deleteResult = mysqli_stmt_affected_rows($statement);
         if ($deleteResult) {
+
             echo " Record deleted from applications table.";
         } else {
             echo "Error deleting record from applications table: " . mysqli_error($conn);

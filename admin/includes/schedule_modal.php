@@ -10,20 +10,38 @@
           	<div class="modal-body">
             	<form class="form-horizontal" method="POST" action="schedule_add.php">
           		  <div class="form-group">
-                  	<label for="time_in" class="col-sm-3 control-label">Time In</label>
+                  	<label for="time_in_am" class="col-sm-3 control-label">Time In (AM)</label>
 
                   	<div class="col-sm-9">
                       <div class="bootstrap-timepicker">
-                    	 <input type="text" class="form-control timepicker" id="time_in" name="time_in" required>
+                    	 <input type="text" class="form-control timepicker" id="time_in_am" name="time_in_am" required>
                       </div>
                   	</div>
                 </div>
                 <div class="form-group">
-                    <label for="time_out" class="col-sm-3 control-label">Time Out</label>
+                    <label for="time_out_am" class="col-sm-3 control-label">Time Out (AM)</label>
 
                     <div class="col-sm-9">
                       <div class="bootstrap-timepicker">
-                        <input type="text" class="form-control timepicker" id="time_out" name="time_out" required>
+                        <input type="text" class="form-control timepicker" id="time_out_am" name="time_out_am" required>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                  	<label for="time_in_pm" class="col-sm-3 control-label">Time In (PM)</label>
+
+                  	<div class="col-sm-9">
+                      <div class="bootstrap-timepicker">
+                    	 <input type="text" class="form-control timepicker" id="time_in_pm" name="time_in_pm" required>
+                      </div>
+                  	</div>
+                </div>
+                <div class="form-group">
+                    <label for="time_out_pm" class="col-sm-3 control-label">Time Out (PM)</label>
+
+                    <div class="col-sm-9">
+                      <div class="bootstrap-timepicker">
+                        <input type="text" class="form-control timepicker" id="time_out_pm" name="time_out_pm" required>
                       </div>
                     </div>
                 </div>
@@ -50,20 +68,38 @@
             	<form class="form-horizontal" method="POST" action="schedule_edit.php">
             		<input type="hidden" id="timeid" name="id">
                 <div class="form-group">
-                    <label for="edit_time_in" class="col-sm-3 control-label">Time In</label>
+                    <label for="edit_time_in_am" class="col-sm-3 control-label">Time In (AM)</label>
 
                     <div class="col-sm-9">
                       <div class="bootstrap-timepicker">
-                        <input type="text" class="form-control timepicker" id="edit_time_in" name="time_in">
+                        <input type="text" class="form-control timepicker" id="edit_time_in_am" name="time_in_am">
                       </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit_time_out" class="col-sm-3 control-label">Time out</label>
+                    <label for="edit_time_out_am" class="col-sm-3 control-label">Time out (AM)</label>
 
                     <div class="col-sm-9">
                       <div class="bootstrap-timepicker">
-                        <input type="text" class="form-control timepicker" id="edit_time_out" name="time_out">
+                        <input type="text" class="form-control timepicker" id="edit_time_out_am" name="time_out_am">
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit_time_in_pm" class="col-sm-3 control-label">Time In (PM)</label>
+
+                    <div class="col-sm-9">
+                      <div class="bootstrap-timepicker">
+                        <input type="text" class="form-control timepicker" id="edit_time_in_pm" name="time_in_pm">
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit_time_out_pm" class="col-sm-3 control-label">Time out (PM)</label>
+
+                    <div class="col-sm-9">
+                      <div class="bootstrap-timepicker">
+                        <input type="text" class="form-control timepicker" id="edit_time_out_pm" name="time_out_pm">
                       </div>
                     </div>
                 </div>

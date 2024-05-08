@@ -6,17 +6,23 @@
 		$description = $_POST['description'];
 		$date_bonus = $_POST['date_bonus'];
 		
-		$sql = "SELECT * FROM employees WHERE employee_id = '$employee'";
-		$query = $conn->query($sql);
-		if($query->num_rows < 1){
+		$sql = "SELECT * FROM employees WHERE employee_id = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("s", $employee);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		
+		if($result->num_rows < 1){
 			$_SESSION['error'] = 'Employee not found';
 		}
 		else{
-			$row = $query->fetch_assoc();
+			$row = $result->fetch_assoc();
 			$employee_id = $row['employee_id'];
-			$sql = "INSERT INTO employee_bonus (employee_id, date_bonus, bonus_id) VALUES ('$employee_id', '$date_bonus', '$description')";
-			if($conn->query($sql)){
-				$_SESSION['success'] = 'Emoloyee Bonus added successfully';
+			$sql = "INSERT INTO employee_bonus (employee_id, date_bonus, bonus_id) VALUES (?, ?, ?)";
+			$stmt = $conn->prepare($sql);
+			$stmt->bind_param("sss", $employee_id, $date_bonus, $description);
+			if($stmt->execute()){
+				$_SESSION['success'] = 'Employee Bonus added successfully';
 			}
 			else{
 				$_SESSION['error'] = $conn->error;
@@ -28,5 +34,4 @@
 	}
 
 	header('location: bonus.php');
-
 ?>

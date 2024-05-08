@@ -32,8 +32,10 @@
 				$password = password_hash($password, PASSWORD_DEFAULT);
 			}
 
-			$sql = "UPDATE admin SET username = '$username', password = '$password', firstname = '$firstname', lastname = '$lastname', photo = '$filename' WHERE id = '".$user['id']."'";
-			if($conn->query($sql)){
+			$sql = "UPDATE admin SET username = ?, password = ?, firstname = ?, lastname = ?, photo = ? WHERE id = ?";
+			$stmt = $conn->prepare($sql);
+			$stmt->bind_param("sssssi", $username, $password, $firstname, $lastname, $filename, $user['id']);
+			if($stmt->execute()){
 				$_SESSION['success'] = 'Admin profile updated successfully';
 			}
 			else{

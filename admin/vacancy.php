@@ -65,6 +65,7 @@ $result_applications = mysqli_query($conn, $query_applications);
                     <th>#</th>
                     <th>Vacancy Information</th>
                     <th>Availability</th>
+                    <th>Photo</th>
                     <th>Status</th>
                     <th>Tools</th>
                 </thead>
@@ -75,19 +76,22 @@ $result_applications = mysqli_query($conn, $query_applications);
                     while($row = $plan->fetch_assoc()):
                         $trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
                         unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
+                        $dets = strtr(html_entity_decode($row['details']), $trans);
+                        $dets = str_replace(array("<li>", "</li>"), array("", ","), $dets);
                         $desc = strtr(html_entity_decode($row['description']), $trans);
                         $desc = str_replace(array("<li>", "</li>"), array("", ","), $desc);
                     
                         echo "
                         <tr>
                             <td class='text-center'>$i</td>
-                            <td class='col-sm-8'>
+                            <td class='col-sm-7'>
                                 <p>Position : <b> ".$row['position'] ."</b></p>
-                                <p class='truncate'><i><small>" . strip_tags($desc) . "</small></i></p>
+                                <p class='truncate'><span>Job Details : </span><i><small>" . strip_tags($dets) . "</small></i></p>
+                                <p class='truncate'><span>Job Description : </span><i><small>" . strip_tags($desc) . "</small></i></p>
                             </td>
                             <td class='text-center'>{$row['availability']}</td>
                             <td>
-                                <img src='".(!empty($row['photo']) ? '../images/'.$row['photo'] : '../images/profile.jpg')."' width='30px' height='30px'>
+                                <img src='".(!empty($row['banner']) ? '../images/'.$row['banner'] : '../images/profile.jpg')."' width='30px' height='30px'>
                                 <a href='#edit_photo' data-toggle='modal' class='pull-right photo' data-id='".$row['id']."'><span class='fa fa-edit'></span></a>
                             </td>
 
@@ -183,10 +187,12 @@ function getRow(id){
       $('.vacaid').val(response.id);
       $('#vacid').val(response.id);
       $('#edit_vac').closest('.jqte').find('.jqte_editor').html(response.description);
+      $('#edit_vac_details').closest('.jqte').find('.jqte_editor').html(response.details);
       $('#edit_availability').val(response.availability);
       $('#edit_position').val(response.position);
       $('#edit_status').find('option[value="' + response.status + '"]').prop('selected', true);
       $('#vac_val').html(response.description);
+      $('#vac_details_val').html(response.details);
       $('#val_availability').val(response.availability).html(response.availability);
       $('#val_position').val(response.position).html(response.position);
       $('#del_vacid').val(response.id);

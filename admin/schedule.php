@@ -52,8 +52,10 @@
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
-                  <th>Time In</th>
-                  <th>Time Out</th>
+                  <th>Time In (AM)</th>
+                  <th>Time Out (AM)</th>
+                  <th>Time In (PM)</th>
+                  <th>Time Out (PM)</th>
                   <th>Total Hours</th>
                   <th>Tools</th>
                 </thead>
@@ -64,8 +66,10 @@
                     while($row = $query->fetch_assoc()){
                       echo "
                         <tr>
-                          <td>".date('h:i A', strtotime($row['time_in']))."</td>
-                          <td>".date('h:i A', strtotime($row['time_out']))."</td>
+                          <td>".date('h:i A', strtotime($row['time_in_AM']))."</td>
+                          <td>".date('h:i A', strtotime($row['time_out_AM']))."</td>
+                          <td>".date('h:i A', strtotime($row['time_in_PM']))."</td>
+                          <td>".date('h:i A', strtotime($row['time_out_PM']))."</td>
                           <td>". $row['total_hours']."</td>
                           <td>
                           <div class='btn-group'>
@@ -121,10 +125,12 @@ function getRow(id){
     dataType: 'json',
     success: function(response){
       $('#timeid').val(response.id);
-      $('#edit_time_in').val(response.time_in);
-      $('#edit_time_out').val(response.time_out);
+      $('#edit_time_in_am').val(response.time_in_AM);
+      $('#edit_time_out_am').val(response.time_out_AM);
+      $('#edit_time_in_pm').val(response.time_in_PM);
+      $('#edit_time_out_pm').val(response.time_out_PM);
       $('#del_timeid').val(response.id);
-      $('#del_schedule').html(response.time_in+' - '+response.time_out);
+      $('#del_schedule').html('AM: ' + response.time_in_AM + ' - ' + response.time_out_AM + '<br> PM: ' + response.time_in_PM + ' - ' + response.time_out_PM);
     }
   });
 }

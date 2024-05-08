@@ -18,9 +18,11 @@
                         <input type="hidden" id="interviewEmail" name="email">
                         <input type="hidden" id="applicantId" name="id">
                         <div class="form-group">
-                            <label for="interview_date" class="col-sm-2 control-label">Date</label>
+                            <label for="datepicker_add" class="col-sm-2 control-label">Date</label>
                             <div class="col-sm-10">
-                                <input type="date" id="interviewDate" class="form-control" name="interview_date">
+                              <div class="date">
+                                  <input type="text" class="form-control" id="datepicker_add" name="interview_date" required>
+                               </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -48,3 +50,17 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#datepicker_add').keydown(function(event) {
+        event.preventDefault(); 
+    });
+
+    $('#datepicker_add').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        startDate: '0d' 
+    });
+});
+</script>

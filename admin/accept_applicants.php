@@ -63,7 +63,7 @@ if (isset($_POST['accept'])) {
         
         $message .= '<p>You can now log in to our employee portal and access your profile and relevant information. Your dedication to ' . $position . ' will undoubtedly contribute to the success of our school, and we look forward to the valuable contributions you will bring to our team.</p>';
         
-        $message .= '<p>Click <a href="http://192.168.16.179:8080/OLSHCOHRMS/EmployeePortal/index.php">here</a> to log in.</p>';
+        $message .= '<p>Click <a href="https://resurgo.xyz/employee_portal/index.php">here</a> to log in.</p>';
         
         $message .= '<p>Thank you for choosing our school. We extend a warm welcome to you, and we look forward to a successful and fulfilling collaboration.</p>';
         $message .= '<p>Best regards,</p>';

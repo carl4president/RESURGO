@@ -5,12 +5,14 @@
 		$description = $_POST['description'];
 		$amount = $_POST['amount'];
 		
-		$sql = "INSERT INTO bonus (description, amount) VALUES ('$description', '$amount')";
-		if($conn->query($sql)){
+		$sql = "INSERT INTO bonus (description, amount) VALUES (?, ?)";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("si", $description, $amount);
+		if($stmt->execute()){
 			$_SESSION['success'] = 'Bonus added successfully';
 		}
 		else{
-			$_SESSION['error'] = $conn->error;
+			$_SESSION['error'] = $stmt->error;
 		}
 	}
 	elseif(isset($_POST['edit'])){
@@ -18,22 +20,26 @@
         $description = $_POST['description'];
 		$amount = $_POST['amount'];
 		
-		$sql = "UPDATE bonus SET description = '$description', amount = '$amount' WHERE id = '$id'";
-		if($conn->query($sql)){
+		$sql = "UPDATE bonus SET description = ?, amount = ? WHERE id = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("sii", $description, $amount, $id);
+		if($stmt->execute()){
 			$_SESSION['success'] = 'Bonus updated successfully';
 		}
 		else{
-			$_SESSION['error'] = $conn->error;
+			$_SESSION['error'] = $stmt->error;
 		}
 	}
 	elseif(isset($_POST['delete'])){
 	    $id = $_POST['id'];
-	    $sql = "DELETE FROM bonus WHERE id = '$id'";
-	    if($conn->query($sql)){
+	    $sql = "DELETE FROM bonus WHERE id = ?";
+	    $stmt = $conn->prepare($sql);
+	    $stmt->bind_param("i", $id);
+	    if($stmt->execute()){
 	        $_SESSION['success'] = 'Bonus deleted successfully';
 	    }
 	    else{
-	        $_SESSION['error'] = $conn->error;
+	        $_SESSION['error'] = $stmt->error;
 	    }
 	}
 	else{

@@ -44,11 +44,18 @@
                 </div>
 			
 				</div>
+			<div class="form-group">
+			
+				<label class="col-sm-2 control-label">Job Details</label>
+                <div class="col-sm-10">
+				<textarea id="edit_vac_details" name="details" class="text-jqte"></textarea>
+                </div>
+		</div>
 		
 		<div class="form-group">
 			
-				<label class="col-sm-2 control-label">Description</label>
-                <div class="col-sm-12">
+				<label class="col-sm-2 control-label">Job Description</label>
+                <div class="col-sm-10">
 				<textarea id="edit_vac" name="description" class="text-jqte"></textarea>
                 </div>
 		</div>
@@ -75,13 +82,6 @@
             <div class="modal-body">
             <form class="form-horizontal" action="vacancy_add.php" method="post" enctype="multipart/form-data">
 
-			<div class="form-group">
-                    <label for="photo" class="col-sm-2 control-label">Photo</label>
-
-                    <div class="col-sm-9">
-					<input type="file" name="photo" id="photo">
-                    </div>
-                </div>
                 <div class="form-group">
 			
 				<label class="col-sm-2 control-label">Position Name</label>
@@ -113,11 +113,18 @@
                 </div>
 			
 				</div>
+		<div class="form-group">
+			
+				<label class="col-sm-2 control-label">Job Details</label>
+                <div class="col-sm-10">
+				<textarea name="details" class="text-jqte"></textarea>
+                </div>
+		</div>
 		
 		<div class="form-group">
 			
-				<label class="col-sm-2 control-label">Description</label>
-                <div class="col-sm-12">
+				<label class="col-sm-2 control-label">Job Description</label>
+                <div class="col-sm-10">
 				<textarea name="description" class="text-jqte"></textarea>
                 </div>
 		</div>
@@ -152,6 +159,14 @@
 	<hr>
 	<div class="row">
 		<div class="col-lg-12">
+		    <h4><b>Job Details :</b></h4>
+            <p id="vac_details_val"></p>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-lg-12">
+		    <h4><b>Job Description :</b></h4>
             <p id="vac_val"></p>
 		</div>
 	</div>

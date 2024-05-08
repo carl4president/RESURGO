@@ -151,5 +151,17 @@
     </div>
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#datepicker_add').keydown(function(event) {
+        event.preventDefault(); 
+    })
+    
+    $('#datepicker_edit').keydown(function(event) {
+        event.preventDefault(); 
+    })
+});
+
+</script>
 
      

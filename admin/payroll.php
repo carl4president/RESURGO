@@ -144,6 +144,7 @@
                             $total_deduction = $deductions;
                             $net = $gross_total - $total_deduction;
 
+
                             echo "
                                 <tr>
                                   <td>".$row['lastname'].", ".$row['firstname']."</td>

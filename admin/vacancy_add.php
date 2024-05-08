@@ -2,13 +2,11 @@
 include 'includes/session.php';
 
 if (isset($_POST['save'])) {
-    $filename = isset($_FILES['photo']['name']) ? $_FILES['photo']['name'] : null;
-    if(!empty($filename)){
-        move_uploaded_file($_FILES['photo']['tmp_name'], '../images/'.$filename);	
-    }
+
     $position = $_POST['position'];
     $availability = $_POST['availability'];
     $status = $_POST['status'];
+    $details = $_POST['details'];
     $description = $_POST['description'];
 
     
@@ -23,9 +21,9 @@ if (isset($_POST['save'])) {
         $_SESSION['error'] = 'The vacancy for a ' . $position . ' is Already Exists; Go Ahead and Perform the Edit.';
     } else {
         
-        $insert_sql = "INSERT INTO vacancy (photo, position, availability, status, description) VALUES (?, ?, ?, ?, ?)";
+        $insert_sql = "INSERT INTO vacancy (position, availability, status, details, description) VALUES (?, ?, ?, ?, ?)";
         $insert_stmt = mysqli_prepare($conn, $insert_sql);
-        mysqli_stmt_bind_param($insert_stmt, "sssis", $filename, $position, $availability, $status, $description);
+        mysqli_stmt_bind_param($insert_stmt, "ssiss", $position, $availability, $status, $details, $description);
         $result = mysqli_stmt_execute($insert_stmt);
 
         if ($result) {

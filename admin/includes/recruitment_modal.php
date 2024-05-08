@@ -428,9 +428,11 @@
                         <input type="hidden" id="interviewEmail" name="email">
                         <input type="hidden" id="applicationId" name="id">
                         <div class="form-group">
-                            <label for="interview_date" class="col-sm-2 control-label">Date</label>
+                            <label for="datepicker_add" class="col-sm-2 control-label">Date</label>
                             <div class="col-sm-10">
-                                <input type="date" class="form-control" id="interview_date" name="interview_date">
+                              <div class="date">
+                                  <input type="text" class="form-control" id="datepicker_add" name="interview_date" required>
+                               </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -541,6 +543,26 @@
 </script>
 
 <script>
+$(document).ready(function() {
+    $('#datepicker_add').keydown(function(event) {
+        event.preventDefault(); 
+    });
+    
+    $('#datepicker_add_birthdate').keydown(function(event) {
+        event.preventDefault(); 
+    });
+    
+    $('#datepicker_edit_birthdate').keydown(function(event) {
+        event.preventDefault(); 
+    });
+    
+    $('#datepicker_add').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd',
+        startDate: '0d' 
+    });
+    
+    
 	$('.text-jqte').jqte();
 
 
@@ -589,5 +611,6 @@
 
                 return true;
                 }
+});
 
 </script>

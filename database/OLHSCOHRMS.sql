@@ -107,9 +107,10 @@ CREATE TABLE IF NOT EXISTS `interview_details` (
 
 CREATE TABLE IF NOT EXISTS `vacancy` (
   `id` int(30) NOT NULL AUTO_INCREMENT,
-  `photo` varchar(200) NOT NULL,
+  `banner` varchar(200) NOT NULL,
   `position` varchar(200) NOT NULL,
   `availability` int(30) NOT NULL,
+  `details` text NOT NULL,
   `description` text NOT NULL,
   `status` tinyint(1) NOT NULL,
   `rate` double NOT NULL,
@@ -118,8 +119,8 @@ CREATE TABLE IF NOT EXISTS `vacancy` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 
-INSERT INTO `vacancy` (`id`, `position`, `availability`, `description`, `status`, `rate`, `date_created`) VALUES
-(1, 'Teacher', 10, '<h2><b>URGENT HIRING!!</b></h2><p><b></p><h3><b>&nbsp;Our school is looking for 10 new Teacher.</b></h3><p><b></p><h2><b>Qualifications:</b></h2><p><b></p><p><h3><h3><h3><h3><h3><h3><h4><h4><h4><h4><h4><h4><h4><ul><li><b>Bachelors Degree in Education</b></li></ul><ul><li><b>Valid Teaching Certification</b></li></ul><ul><li><b>Proven Teaching Experience in any grade level</b></li></ul><ul><li><b>Strong Communication and Interpersonal Skills</b></li></ul><ul><li><b>Passion for Lifelong Learning and Professional Development</b></li></ul></h4></h4></h4></h4></h4></h4></h4></h3></h3></h3></h3></h3></h3></p>', 1, 50, '2020-09-28 11:24:52');
+INSERT INTO `vacancy` (`id`, `banner`, `position`, `availability`, `description`, `status`, `rate`, `date_created`) VALUES
+(1, 'file-teaching-skills-1605625101.jpg', 'Teacher', 10, '<h2><b>URGENT HIRING!!</b></h2><p><b></p><h3><b>&nbsp;Our school is looking for 10 new Teacher.</b></h3><p><b></p><h2><b>Qualifications:</b></h2><p><b></p><p><h3><h3><h3><h3><h3><h3><h4><h4><h4><h4><h4><h4><h4><ul><li><b>Bachelors Degree in Education</b></li></ul><ul><li><b>Valid Teaching Certification</b></li></ul><ul><li><b>Proven Teaching Experience in any grade level</b></li></ul><ul><li><b>Strong Communication and Interpersonal Skills</b></li></ul><ul><li><b>Passion for Lifelong Learning and Professional Development</b></li></ul></h4></h4></h4></h4></h4></h4></h4></h3></h3></h3></h3></h3></h3></p>', 1, 50, '2020-09-28 11:24:52');
 --
 -- Table structure for table `attendance`
 --
@@ -128,15 +129,19 @@ CREATE TABLE IF NOT EXISTS `attendance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` varchar(10) NULL,
   `date` date NOT NULL,
-  `time_in` time NOT NULL,
-  `status` int(1) NOT NULL,
-  `time_out` time NOT NULL,
-  `overtime_status` int(1) NOT NULL,
+  `time_in_AM` time NOT NULL,
+  `time_in_AM_status` int(1) NOT NULL,
+  `time_out_AM` time NOT NULL,
+  `time_out_AM_status` int(1) NOT NULL,
+  `time_in_PM` time NOT NULL,
+  `time_in_PM_status` int(1) NOT NULL,
+  `time_out_PM` time NOT NULL,
+  `time_out_PM_status` int(1) NOT NULL,
   `num_hr` double NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-INSERT INTO `attendance` (`id`, `employee_id`, `date`, `time_in`, `status`, `time_out`, `overtime_status`, `num_hr`) VALUES (1, '51-04964', '2023-12-10', '07:00:00', '1', '16:00:00', '0', '9');
+INSERT INTO `attendance` (`id`, `employee_id`, `date`, `time_in_AM`, `time_in_AM_status`, `time_out_AM`, `time_out_AM_status`, `time_in_PM`, `time_in_PM_status`, `time_out_PM`, `time_out_PM_status`, `num_hr`) VALUES (1, '51-04964', '2023-12-10', '07:00:00', '1', '12:00:00', '0', '13:00:00', '1', '16:00:00', '0', '9');
 
 
 CREATE TABLE `leave_requests` (
@@ -307,8 +312,10 @@ CREATE TABLE IF NOT EXISTS `overtime` (
 
 CREATE TABLE IF NOT EXISTS `schedules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time_in` time NOT NULL,
-  `time_out` time NOT NULL,
+  `time_in_AM` time NOT NULL,
+  `time_out_AM` time NOT NULL,
+  `time_in_PM` time NOT NULL,
+  `time_out_PM` time NOT NULL,
   `total_hours` DECIMAL(5,2) NOT NULL, -- Adjust precision and scale based on your needs
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -317,9 +324,10 @@ CREATE TABLE IF NOT EXISTS `schedules` (
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`id`, `time_in`, `time_out`, `total_hours`) VALUES
-(1, '07:00:00', '16:00:00', TIME_TO_SEC(TIMEDIFF('16:00:00', '07:00:00')) / 3600),
-(2, '08:00:00', '17:00:00', TIME_TO_SEC(TIMEDIFF('17:00:00', '08:00:00')) / 3600);
+INSERT INTO `schedules` (`id`, `time_in_AM`, `time_out_AM`, `time_in_PM`, `time_out_PM`, `total_hours`) VALUES
+(1, '07:00:00', '12:00:00', '13:00:00', '16:00:00', (TIME_TO_SEC(TIMEDIFF('12:00:00', '07:00:00')) / 3600) + (TIME_TO_SEC(TIMEDIFF('16:00:00', '13:00:00')) / 3600)),
+(2, '08:00:00', '11:00:00', '13:00:00', '17:00:00', (TIME_TO_SEC(TIMEDIFF('11:00:00', '08:00:00')) / 3600) + (TIME_TO_SEC(TIMEDIFF('17:00:00', '13:00:00')) / 3600));
+
 
 
 --

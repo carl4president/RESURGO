@@ -71,7 +71,7 @@
                           <td><img src="<?php echo (!empty($row['photo']))? '../images/'.$row['photo']:'../images/profile.jpg'; ?>" width="30px" height="30px"> <a href="#edit_photo" data-toggle="modal" class="pull-right photo" data-id="<?php echo $row['empid']; ?>"><span class="fa fa-edit"></span></a></td>
                           <td><?php echo $row['firstname'].' '.$row['middlename'].' '.$row['lastname']; ?></td>
                           <td><?php echo $row['position']; ?></td>
-                          <td><?php echo date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out'])); ?></td>
+                          <td><?php echo 'AM: ' . date('h:i A', strtotime($row['time_in_AM'])) . ' - ' . date('h:i A', strtotime($row['time_out_AM'])) . '<br> PM: ' . date('h:i A', strtotime($row['time_in_PM'])) . ' - ' . date('h:i A', strtotime($row['time_out_PM'])); ?></td>
                           <td><?php echo date('M d, Y', strtotime($row['hire_date'])) ?></td>
                           <td>
                           <div class='btn-group'>
@@ -166,7 +166,7 @@ function getRow(id){
       $('#email_view').html(response.email);
       $('#gender_val').val(response.gender).html(response.gender);
       $('#position_value').val(response.position).html(response.position);
-      $('#schedule_val').val(response.schedule_id).html(response.time_in+' - '+response.time_out);
+      $('#schedule_val').val(response.schedule_id).html('AM: ' + response.time_in_AM + ' - ' + response.time_out_AM + ', PM: ' + response.time_in_PM + ' - ' + response.time_out_PM);
       $('#photo_val').attr('src', '../images/' + response.photo).attr('alt', 'Employee Photo');
       $('#del_id').val(response.id);
       $('#del_employee_id').val(response.employee_id);

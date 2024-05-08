@@ -43,20 +43,38 @@
                     </div>
                 </div>
                 <div class="form-group">
-                  	<label for="time_in" class="col-sm-3 control-label">Time In</label>
+                  	<label for="time_in_am" class="col-sm-3 control-label">Time In (AM)</label>
 
                   	<div class="col-sm-9">
                   		<div class="bootstrap-timepicker">
-                    		<input type="text" class="form-control timepicker" id="time_in" name="time_in">
+                    		<input type="text" class="form-control timepicker" id="time_in_am" name="time_in_am">
                     	</div>
                   	</div>
                 </div>
                 <div class="form-group">
-                  	<label for="time_out" class="col-sm-3 control-label">Time Out</label>
+                  	<label for="time_out_am" class="col-sm-3 control-label">Time Out (AM)</label>
 
                   	<div class="col-sm-9">
                   		<div class="bootstrap-timepicker">
-                    		<input type="text" class="form-control timepicker" id="time_out" name="time_out">
+                    		<input type="text" class="form-control timepicker" id="time_out_am" name="time_out_am">
+                    	</div>
+                  	</div>
+                </div>
+                                <div class="form-group">
+                  	<label for="time_in_pm" class="col-sm-3 control-label">Time In (PM)</label>
+
+                  	<div class="col-sm-9">
+                  		<div class="bootstrap-timepicker">
+                    		<input type="text" class="form-control timepicker" id="time_in_pm" name="time_in_pm">
+                    	</div>
+                  	</div>
+                </div>
+                <div class="form-group">
+                  	<label for="time_out_pm" class="col-sm-3 control-label">Time Out (PM)</label>
+
+                  	<div class="col-sm-9">
+                  		<div class="bootstrap-timepicker">
+                    		<input type="text" class="form-control timepicker" id="time_out_pm" name="time_out_pm">
                     	</div>
                   	</div>
                 </div>
@@ -92,20 +110,38 @@
                     </div>
                 </div>
                 <div class="form-group">
-                  	<label for="edit_time_in" class="col-sm-3 control-label">Time In</label>
+                  	<label for="edit_time_in_am" class="col-sm-3 control-label">Time In (AM)</label>
 
                   	<div class="col-sm-9">
                   		<div class="bootstrap-timepicker">
-                    		<input type="text" class="form-control timepicker" id="edit_time_in" name="edit_time_in">
+                    		<input type="text" class="form-control timepicker" id="edit_time_in_am" name="time_in_am">
                     	</div>
                   	</div>
                 </div>
                 <div class="form-group">
-                  	<label for="edit_time_out" class="col-sm-3 control-label">Time Out</label>
+                  	<label for="edit_time_out_am" class="col-sm-3 control-label">Time Out (AM)</label>
 
                   	<div class="col-sm-9">
                   		<div class="bootstrap-timepicker">
-                    		<input type="text" class="form-control timepicker" id="edit_time_out" name="edit_time_out">
+                    		<input type="text" class="form-control timepicker" id="edit_time_out_am" name="time_out_am">
+                    	</div>
+                  	</div>
+                </div>
+                 <div class="form-group">
+                  	<label for="edit_time_in_pm" class="col-sm-3 control-label">Time In (PM)</label>
+
+                  	<div class="col-sm-9">
+                  		<div class="bootstrap-timepicker">
+                    		<input type="text" class="form-control timepicker" id="edit_time_in_pm" name="time_in_pm">
+                    	</div>
+                  	</div>
+                </div>
+                <div class="form-group">
+                  	<label for="edit_time_out_pm" class="col-sm-3 control-label">Time Out (PM)</label>
+
+                  	<div class="col-sm-9">
+                  		<div class="bootstrap-timepicker">
+                    		<input type="text" class="form-control timepicker" id="edit_time_out_pm" name="time_out_pm">
                     	</div>
                   	</div>
                 </div>
@@ -145,5 +181,12 @@
     </div>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#datepicker_add, #datepicker_edit').keydown(function(event) {
+        event.preventDefault(); 
+    })
+    });
+</script>
      
