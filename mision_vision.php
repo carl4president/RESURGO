@@ -22,7 +22,7 @@ include 'header.php';
         </div>
         <div class="vision">
           <h2>OUR VISION</h2>
-          <p>A diocesan catholic school communitythat is founded on the oneness of Heart of Jesus and Mary and passionate in the communalworkofintegralhuman development of young towards the fullness of life.</p>
+          <p>A Diocesan Catholic School Communitythat is founded on the oneness of Heart of Jesus and Mary and passionate in the communalworkofintegralhuman development of young towards the fullness of life.</p>
         </div>
     </section>
     <section id="core-values" class="section-p1">

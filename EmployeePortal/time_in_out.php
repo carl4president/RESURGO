@@ -10,9 +10,9 @@
      Time and Attendance
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#"> Time and Attendance</a></li>
-        <li class="active">Attendance</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home </a></li>
+        <li><a href="#"> Time and Attendance </a></li>
+        <li class="active">Attendance </li>
       </ol>
     </section>
     <!-- Main content -->
@@ -30,7 +30,7 @@
   	</div>
   
   	<div class="login-box-body">
-    	<h4 class="login-box-msg">Enter your Employee ID</h4>
+    	<h4 class="login-box-msg"> Enter your Employee ID </h4>
 
     	<form id="attendance">
           <div class="form-group">

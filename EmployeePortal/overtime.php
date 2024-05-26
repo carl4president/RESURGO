@@ -57,16 +57,16 @@
                 </thead>
                 <tbody>
                   <?php
-                    $employee = $_SESSION['employee'];
+                    $employee = $_SESSION['Employee'];
                     $sql = "SELECT * FROM overtime WHERE employee_id = '$employee'";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
                       echo "
                               <tr>
-                                  <td>" . $row['hours'] . "</td>
-                                  <td>" . $row['rate'] . "</td>
-                                  <td>" . $row['total_overtime_pay'] . "</td>
-                                  <td>" . $row['date_overtime'] . "</td>
+                                  <td>" . $row['Hours'] . "</td>
+                                  <td>" . $row['Rate'] . "</td>
+                                  <td>" . $row['Total_Overtime_pay'] . "</td>
+                                  <td>" . $row['Date_Overtime'] . "</td>
                                 </tr>   
                           ";
 
