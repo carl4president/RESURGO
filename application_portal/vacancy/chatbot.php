@@ -264,6 +264,13 @@ body.show-chatbot .chatbot {
       </div>
 </section>
 <script>
+    document.getElementById('data').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();  
+            document.getElementById('send-btn').click();  
+        }
+    });
+    
 $(document).ready(function(){
     
     
