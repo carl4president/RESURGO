@@ -109,21 +109,19 @@
 <?php include 'includes/scripts.php'; ?> 
 <script>
 $(function(){
-
-    $('.accept').click(function(e){
+  $('.box-body').on('click', '.accept', function(e){
     e.preventDefault();
     $('#accept').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-  $('.reject').click(function(e){
+
+  $('.box-body').on('click', '.reject', function(e){
     e.preventDefault();
     $('#reject').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-
-
 });
 
 

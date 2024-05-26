@@ -11,20 +11,6 @@
             	<form class="form-horizontal" method="POST" action="employees_archive.php">
               <input type="hidden" class="empid" name="id">
               <input type="hidden" id="ret_employee_id" name="employee_id">
-              <input type="hidden" id="ret_firstname" name="firstname">
-              <input type="hidden" id="ret_middlename" name="middlename">
-              <input type="hidden" id="ret_lastname" name="lastname">
-              <input type="hidden" id="ret_address" name="address">
-              <input type="hidden" id="ret_birthdate" name="birthdate">
-              <input type="hidden" id="ret_contact" name="phone">
-              <input type="hidden" id="ret_gender" name="gender">
-              <input type="hidden" id="ret_email" name="email">
-              <input type="hidden" id="ret_position_id" name="position_id">
-              <input type="hidden" id="ret_schedule_id" name="schedule_id">
-              <input type="hidden" id="ret_photo" name="photo">
-              <input type="hidden" id="ret_hire_date" name="hire_date">
-              <input type="hidden" id="ret_username" name="username">
-              <input type="hidden" id="ret_password" name="password">
 
             		<div class="text-center">
 	                	<p>RETRIEVE EMPLOYEE</p>

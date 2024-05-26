@@ -13,18 +13,30 @@ if (isset($_POST['add'])) {
     $endDateTime = new DateTime($endDate);
     $duration = $startDateTime->diff($endDateTime)->days;
     $status = 'Pending';
-
-    $sql = "INSERT INTO leave_requests (employee_id, leave_type, start_date, end_date, duration, reason, status, date_requested)
-    VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssss", $employee, $leaveType, $startDate, $endDate, $duration, $reason, $status);
-    if ($stmt->execute()) {
-        $_SESSION['success'] = "Leave request added successfully";
+    
+    $today = date('Y-m-d');
+    $checkSql = "SELECT * FROM leave_requests WHERE employee_id = ? AND DATE(date_requested) = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ss", $employee, $today);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+    if ($result->num_rows > 0) {
+        $_SESSION['error'] = "You've already submitted a leave request for today. Each employee can only submit one per day.";
     } else {
-        $_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+
+        $sql = "INSERT INTO leave_requests (employee_id, leave_type, start_date, end_date, duration, reason, status, date_requested)
+        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+    
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssss", $employee, $leaveType, $startDate, $endDate, $duration, $reason, $status);
+        if ($stmt->execute()) {
+            $_SESSION['success'] = "Leave request added successfully";
+        } else {
+            $_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+        }
+        $stmt->close();
     }
-    $stmt->close();
+    $checkStmt->close();
 } elseif (isset($_POST['cancel'])) {
     $id = $_POST['id'];
     

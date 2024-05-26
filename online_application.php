@@ -60,23 +60,27 @@ if(isset($_GET['id'])) {
             <ul>
             <li id="full-name">
             <h4>Full Name <span>*</span></h4>
-                    <div>
-                        <input type="text" class="first_name" id="first_name" name="first_name">
-                        <label for="first_name">First Name</label>
-                    </div>
-                    <div class="middle-box">
-                        <input type="text" class="middle_name" name="middle_name" id="middle_name">
-                        <label for="middle_name">Middle Name</label>
-                    </div>
-                    <div>
-                        <input type="text" class="last_name" name="last_name" id="last_name">
-                        <label for="last_name">Last Name</label>
-                    </div>
+                <div>
+                    <input type="text" class="first_name" id="first_name" name="first_name" required 
+                           pattern="[a-zA-Z\s]{2,}" title="First name must contain at least 2 characters and only letters">
+                    <label for="first_name">First Name</label>
+                </div>
+                <div class="middle-box">
+                    <input type="text" class="middle_name" name="middle_name" id="middle_name" 
+                           pattern="[a-zA-Z\s]{2,}" title="Middle name must contain at least 2 characters and only letters">
+                    <label for="middle_name">Middle Name</label>
+                </div>
+                <div>
+                    <input type="text" class="last_name" name="last_name" id="last_name" required 
+                           pattern="[a-zA-Z\s]{2,}" title="Last name must contain at least 2 characters and only letters">
+                    <label for="last_name">Last Name</label>
+                </div>
+
             </li>
             <li id="gender">
             <h4>Sex<span>*</span></h4>
                     <div class="position-select">
-                    <select class="form-select" name="gender" id="gender" name="gender">
+                    <select class="form-select" name="gender" id="gender">
                             <option <?php echo isset($gender) && $gender == 'Male' ? "selected" : '' ?>>Male</option>
                         <option <?php echo isset($gender) && $gender == 'Female' ? "selected" : '' ?>>Female</option>
                     </select>
@@ -84,25 +88,24 @@ if(isset($_GET['id'])) {
             </li>
             <li id="address">
             <h4>Current Address <span>*</span></h4>
-                        <div class="address">
-                        <input type="text" class="street" id="street" name="street">
-                        <label for="street">Street Address</label>
-                        <div class="address-row">
-                                <div>
-                                    <input type="text" class="city" id="city" name="city">
-                                    <label for="city">City</label>
-                                </div>
-                                <div class="middle-box">
-                                    <input type="text" class="state_province" id="state_province" name="state_province">
-                                    <label for="state_province">State / province</label>
-                                </div>
-                                <div>
-                                    <input type="text" class="postal_zip_code" id="postal_zip_code" name="postal_zip_code" oninput="validateContactInput(this)">
-                                    <label for="postal_zip_code">Postal / Zip Code</label>
-                                </div>
-                            </div>
+                <div class="address">
+                    <input type="text" class="street" id="street" name="street" required>
+                    <label for="street">Street Address <span>*</span></label>
+                    <div class="address-row">
+                        <div>
+                            <input type="text" class="city" id="city" name="city" required>
+                            <label for="city">City <span>*</span></label>
                         </div>
-                    
+                        <div class="middle-box">
+                            <input type="text" class="state_province" id="state_province" name="state_province" required>
+                            <label for="state_province">State / Province <span>*</span></label>
+                        </div>
+                        <div>
+                            <input type="text" class="postal_zip_code" id="postal_zip_code" name="postal_zip_code" oninput="validateContactInput(this)">
+                            <label for="postal_zip_code">Postal / Zip Code <span>*</span></label>
+                        </div>
+                    </div>
+                </div>
                </li>
                <li id="birthday">
                <h4>Date of Birth <span>*</span></h4>
@@ -114,13 +117,19 @@ if(isset($_GET['id'])) {
                 <li id="email-address">
                 <h4>Email <span>*</span></h4>
                     <div class="email-input">
-                    <input type="email" name="email" id="email" name="email" placeholder="ex:name@gmail.com">
+                        <input type="email" name="email" id="email" placeholder="ex:name@gmail.com"
+                               pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                               title="Please enter a valid email address (e.g., name@gmail.com)">
                     </div>
+
                  </li>
                  <li id="phone-num">
                     <h4>Contact Number <span>*</span></h4>
                     <div class="phone-input">
-                        <input type="tel" class="phone" id="phone" name="phone" inputmode="numeric" minlength="11" maxlength="11" required oninput="validateContactInput(this)">
+                        <input type="tel" class="phone" id="phone" name="phone" inputmode="numeric" minlength="11" maxlength="11" required 
+                           pattern="0[0-9]{10}" title="Phone number must be exactly 11 digits long and start with 0 (e.g., 09123456789)"
+                           oninput="validateContactInput(this)">
+
                         <label for="phone">Phone Number</label>
                     </div>
                 </li>
@@ -134,7 +143,7 @@ if(isset($_GET['id'])) {
                 <li id="resume-select">
                 <h4>Resume <span>*</span></h4>
                 <div class="file-input-container">
-                       <input type="file" name="resume" id="real-file" hidden="hidden" />
+                       <input type="file" name="resume" id="real-file" hidden="hidden"/>
                         <button type="button" id="custom-button">CHOOSE A FILE</button>
                         <span id="custom-text">No file chosen, yet.</span>
                 </div>
@@ -234,7 +243,7 @@ if(isset($_GET['id'])) {
             LinputElement.value = alphabeticValue;
             });
 
-            const formFileInput = document.getElementById("formFile");
+            const formFileInput = document.getElementById("real-file");
 
             formFileInput.addEventListener("change", function () {
                 const allowedExtension = "pdf";
@@ -242,13 +251,14 @@ if(isset($_GET['id'])) {
 
                 if (!fileName.endsWith("." + allowedExtension)) {
                     alert("Please select a valid PDF file.");
-                    this.value = ""; // Clear the input field
+                    this.value = ""; 
                 }
             });
+            
 
 
         function validateForm() {
-            // Basic client-side validation
+            
             const firstName = document.getElementById("first_name").value;
             const middleName = document.getElementById("middle_name").value;
             const lastName = document.getElementById("last_name").value;
@@ -259,7 +269,7 @@ if(isset($_GET['id'])) {
             const postal_zip_code = document.getElementById("postal_zip_code").value;
             const email = document.getElementById("email").value;
             const phone = document.getElementById("phone").value;
-            const formFile = document.getElementById("formFile").value;
+            const formFile = document.getElementById("real-file").value;
             if (firstName === "" || middleName === "" || lastName === "" || street === "" 
             || birthdate === "" || city === "" || state_province === "" || postal_zip_code === "" 
             || email === "" || phone === "" || formFile === "") {
@@ -279,12 +289,16 @@ if(isset($_GET['id'])) {
             else if (lastName.length < 2){
                 alert("Last Name must be atleast 2 characters long. Please Try Again.");
                 return false;
-            } else if (phone.length !== 11) {
-                    alert("Phone number must be exactly 11 digits long. Please try again.");
-                    return false;
-                }
+            } else if (!/^\d{11}$/.test(phone)) {
+                alert("Phone number must be exactly 11 digits long and contain only numbers. Please try again.");
+                return false;
+            } else if (!/^0[1-9]\d{9}$/.test(phone)) {
+                alert("Invalid phone number format. Please enter a valid 11-digit phone number starting with 0.");
+                return false;
+            }
+        
             return true;
-        }
+}
 
 
         

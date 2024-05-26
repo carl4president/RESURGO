@@ -57,7 +57,75 @@
 			$overtime_pay = $row['total_overtimepay'];
 			$gross = $row['rate'] * $row['total_hr'];
 			$gross_total = $gross + $overtime_pay + $bonus_pay;
-			$total_deduction = $deductions;
+			
+             if ($gross_total >= 20250 && $gross_total <= 20749.99) {
+                $SSS_deduction = 500.00;  
+            } elseif ($gross_total >= 20750 && $gross_total <= 21249.99) {
+                $SSS_deduction = 1000.00;
+            } elseif ($gross_total >= 21250 && $gross_total <= 21749.99) {
+                $SSS_deduction = 1500.00;
+            } elseif ($gross_total >= 21750 && $gross_total <= 22249.99) {
+                $SSS_deduction = 2000.00;
+            } elseif ($gross_total >= 22250 && $gross_total <= 22749.99) {
+                $SSS_deduction = 2500.00;
+            } elseif ($gross_total >= 22750 && $gross_total <= 23249.99) {
+                $SSS_deduction = 3000.00;
+            } elseif ($gross_total >= 23250 && $gross_total <= 23749.99) {
+                $SSS_deduction = 3500.00;
+            } elseif ($gross_total >= 23750 && $gross_total <= 24249.99) {
+                $SSS_deduction = 4000.00;
+            } elseif ($gross_total >= 24250 && $gross_total <= 24749.99) {
+                $SSS_deduction = 4500.00;
+            } elseif ($gross_total >= 24750 && $gross_total <= 25249.99) {
+                $SSS_deduction = 5000.00;
+            } elseif ($gross_total >= 25250 && $gross_total <= 25749.99) {
+                $SSS_deduction = 5500.00;
+            } elseif ($gross_total >= 25750 && $gross_total <= 26249.99) {
+                $SSS_deduction = 6000.00;
+            } elseif ($gross_total >= 26250 && $gross_total <= 26749.99) {
+                $SSS_deduction = 6500.00;
+            } elseif ($gross_total >= 26750 && $gross_total <= 27249.99) {
+                $SSS_deduction = 7000.00;
+            } elseif ($gross_total >= 27250 && $gross_total <= 27749.99) {
+                $SSS_deduction = 7500.00;
+            } elseif ($gross_total >= 27750 && $gross_total <= 28249.99) {
+                $SSS_deduction = 8000.00;
+            } elseif ($gross_total >= 28250 && $gross_total <= 28749.99) {
+                $SSS_deduction = 8500.00;
+            } elseif ($gross_total >= 28750 && $gross_total <= 29249.99) {
+                $SSS_deduction = 9000.00;
+            } elseif ($gross_total >= 29250 && $gross_total <= 29749.99) {
+                $SSS_deduction = 9500.00;
+            } elseif ($gross_total >= 29750) {
+                $SSS_deduction = 10000.00;
+            } else {
+                $SSS_deduction = 0; 
+            }
+            
+            
+            $monthlyBasicIncome = $gross_total;
+            $premiumRate = 0.05;  
+            
+            if ($monthlyBasicIncome <= 10000) {
+                $PhilHealth_deduction = 500.00;  
+            } elseif ($monthlyBasicIncome >= 10000.01 && $monthlyBasicIncome < 100000) {
+                $calculatedPremium = $monthlyBasicIncome * $premiumRate;
+                $PhilHealth_deduction = ($calculatedPremium > 5000) ? 5000 : $calculatedPremium;  
+            } elseif ($monthlyBasicIncome >= 100000) {
+                $PhilHealth_deduction = 5000.00; 
+            }
+            
+            if ($gross_total <= 1500) {
+                $PagIBIG_deduction = $gross_total * 0.01; 
+                $max_contribution = 15;
+            } else {
+                $PagIBIG_deduction = $gross_total * 0.02; 
+                $max_contribution = 200;
+            }
+            
+            $PagIBIG_deduction = min($PagIBIG_deduction, $max_contribution);
+			
+			$total_deduction = $deductions + $SSS_deduction + $PhilHealth_deduction + $PagIBIG_deduction;
 			$net = $gross_total - $total_deduction;
 
 

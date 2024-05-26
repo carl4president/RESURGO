@@ -72,8 +72,11 @@ $result_applications = mysqli_query($conn, $query_applications);
                 <tbody>
                 <?php
                   
-                  $sql = "SELECT a.*, v.position, v.availability FROM application_archive a
-                      INNER JOIN vacancy v ON v.id = a.position_id";
+                $sql = "SELECT a.*, v.position, v.availability 
+                        FROM application a
+                        INNER JOIN vacancy v ON v.id = a.position_id
+                        WHERE a.status = 1";
+
                     $query = $conn->query($sql);
 
                     while ($row = $query->fetch_assoc()) {
@@ -111,7 +114,10 @@ $result_applications = mysqli_query($conn, $query_applications);
                                       <input type='hidden' name='postal_zip_code' value='" . $row['postal_zip_code'] . "'>
                                       <input type='hidden' name='birthdate' value='" . $row['birthdate'] . "'>
                                       <input type='hidden' name='resume' value='" . $row['resume'] . "'>
-                                          <button class='btn btn-primary btn-sm btn-flat drpd-btn' type='submit' name='retrieve'>
+                                          <button class='btn btn-info btn-sm btn-flat view drpd-btn' data-id='" . $row['id'] . "'>
+                                          <i class='fa fa-eye'></i> View
+                                          </button>
+                                          <button class='btn btn-primary btn-sm btn-flat retrieve drpd-btn' data-id='" . $row['id'] . "'>
                                           <i class='fa fa-mail-reply'></i> Retrieve
                                           </button>
                                       </form>                                  
@@ -142,57 +148,28 @@ $result_applications = mysqli_query($conn, $query_applications);
 <?php include 'includes/scripts.php'; ?> 
 <script>
 $(function(){
-  $('.edit').click(function(e){
-    e.preventDefault();
-    $('#edit').modal('show');
-    var id = $(this).data('id');
-    $('#aid').val(id); 
-    getRow(id);
-  });
-
-  $('.view_resume').click(function(e){
+  $('.box-body').on('click', '.view_resume', function(e){
     e.preventDefault();
     $('#view_resume').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.send_email').click(function (e) {
-    e.preventDefault();
-    $('#send_email').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-    });
-
-
-    $('.interview').click(function(e) {
-      e.preventDefault();
-      $('#interviewModal').modal('show');
-      var id = $(this).data('id');
-      var applicantid = $(this).data('applicantid');
-      var applicantName = $(this).data('applicantname');
-      var position = $(this).data('position');
-      var email = $(this).data('email');
-      $('#applicantName').text(applicantName);
-      $('#interviewPosition').text(position);
-
-
-     $('#applicationId').val(id);
-    $('#applicantNameInput').val(applicantName);
-    $('#applicantIdInput').val(applicantid);
-    $('#interviewPositionInput').val(position);
-    $('#interviewApplicant_idInput').val(id);
-    $('#interviewEmail').val(email);
-    });
-
-    $('.view').click(function(e){
+  $('.box-body').on('click', '.view', function(e) {
     e.preventDefault();
     $('#view').modal('show');
     var id = $(this).data('id');
     var position = $(this).data('position');
     getRow(id, position);
-    });
-
+  });
+  
+    $('.box-body').on('click', '.retrieve', function(e) {
+    e.preventDefault();
+    $('#retrieve').modal('show');
+    var id = $(this).data('id');
+    var position = $(this).data('position');
+    getRow(id, position);
+  });
 
 });
 
@@ -209,11 +186,13 @@ function getRow(id, position) {
       } else {
         
         $('#aid').val(response.id);
+        $('.appid').val(response.id);
         $('.aid').val(response.applicant_id);
         $('#aid_view').html(response.applicant_id);
         $('.del_app_name').html(response.firstname+' '+response.lastname);
         $('#app_birthdate').html(response.birthdate);
         $('#app_contact_info').html(response.contact_info);
+        $('.app_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
         $('#app_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
         $('#edit_firstname').val(response.firstname);
         $('#edit_middlename').val(response.middlename);

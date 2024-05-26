@@ -11,7 +11,15 @@ include '../includes/conn.php';
 }
 .vacancy-list{
 cursor: pointer;
+transition: transform 0.3s, border-color 0.3s;
 }
+
+.vacancy-list:hover {
+  transform: scale(1.05);
+  border-color: #5F0000;
+}
+
+
 span.hightlight{
     background: yellow;
 }
@@ -60,6 +68,9 @@ nav{
          <img id="bar" class="bar" src="img/outdent.png" width="10px" height="10px"></img>
          </div>
     </section>
+<?php
+  include 'chatbot.php';
+?>
     <header class="masthead">
             <div class="container-fluid h-100">
                 <div class="row h-100 align-items-center justify-content-center text-center">
@@ -118,6 +129,9 @@ nav{
 
 
         <script>
+    $('html, body').animate({
+        scrollTop: ($('#list').offset().top - 52)
+    }, 1000);
     $('.card.vacancy-list').click(function(){
     var id = $(this).attr('data-id');
     var encryptedId = id;
@@ -141,5 +155,7 @@ nav{
             }
         })
     })
+    
+    
 </script>
 <script src="js/mobile_script.js"></script>

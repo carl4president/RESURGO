@@ -1,3 +1,12 @@
+<style>
+    #file-name-resume {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #333;
+}
+</style>
 <!-- Add -->
 <div class="modal fade" id="addnew" data-backdrop="static">
     <div class="modal-dialog">
@@ -53,7 +62,7 @@
                     <label for="postal_zip_code" class="col-sm-3 control-label">Postal/Zip Code</label>
 
                   	<div class="col-sm-2">
-                      <input type="text" class="form-control" name="postal_zip_code" id="postal_zip_code" oninput="validateContactInput(this)"></input>
+                      <input type="text" class="form-control" name="postal_zip_code" id="postal_zip_code" oninput="validateContactInput(this)" required></input>
                   	</div>
                 </div>
                 <div class="form-group">
@@ -69,7 +78,7 @@
                     <label for="contact" class="col-sm-3 control-label">Contact Info</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="contact" name="contact" oninput="validateContactInput(this)">
+                      <input type="text" class="form-control" id="contact" name="contact" oninput="validateContactInput(this)" inputmode="numeric" minlength="11" maxlength="11" required pattern="0[0-9]{10}" title="Phone number must be exactly 11 digits long and start with 0 (e.g., 09123456789)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -113,7 +122,11 @@
                     <label for="photo" class="col-sm-3 control-label">Resume</label>
 
                     <div class="col-sm-9">
-                       <input class="form-control" type="file" id="formFile" name="resume">
+                       <input class="form-control" type="file" id="formFile" name="resume" onchange="resumeFile()">
+                        <label for="formFile" class="custom-file-upload">
+                            Choose File
+                        </label>
+                        <span id="file-name-resume">No file chosen</span>
                     </div>
                 </div>
           	</div>
@@ -183,7 +196,7 @@
                     <label for="edit_postal_zip_code" class="col-sm-3 control-label">Postal/Zip Code</label>
 
                   	<div class="col-sm-2">
-                      <input type="text" class="form-control" name="postal_zip_code" id="edit_postal_zip_code"></input>
+                      <input type="text" class="form-control" name="postal_zip_code" id="edit_postal_zip_code" oninput="validateContactInput(this)"></input>
                   	</div>
                 </div>
                 <div class="form-group">
@@ -526,7 +539,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="retrieve" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          	<div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              		<span aria-hidden="true">&times;</span></button>
+            	<h4 class="modal-title"><b><span class="employee_id"></span></b></h4>
+          	</div>
+          	<div class="modal-body">
+            	<form class="form-horizontal" method="POST" action="application_archive.php">
+              <input type="hidden" class="appid" name="id">
 
+            		<div class="text-center">
+	                	<p>RETRIEVE APPLICATION</p>
+	                	<h2 class="bold app_name"></h2>
+	            	</div>
+          	</div>
+          	<div class="modal-footer">
+            	<button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            	<button type="submit" class="btn btn-primary btn-flat" name="retrieve"><i class="fa fa-mail-reply"></i> Retrieve</button>
+            	</form>
+          	</div>
+        </div>
+    </div>
+</div>
 
 <script>
   const formFileInput = document.getElementById("formFile");
@@ -543,6 +580,84 @@
 </script>
 
 <script>
+function resumeFile() {
+    var fileInput = document.getElementById('formFile');
+    var fileNameSpan = document.getElementById('file-name-resume');
+
+    if (fileInput.files && fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        var fileName = file.name;
+        var fileType = file.type;
+        var fileExtension = fileName.split('.').pop().toLowerCase();
+
+        if (fileType === 'application/pdf' && fileExtension === 'pdf') {
+            fileNameSpan.textContent = fileName;
+        } else {
+            fileNameSpan.textContent = 'Invalid file type. Please upload a PDF.';
+            fileInput.value = ''; 
+            fileNameSpan.textContent = 'No file chosen';
+        }
+    } else {
+        fileNameSpan.textContent = 'No file chosen';
+    }
+}
+
+        function validateContactInput(inputElement) {
+                const inputValue = inputElement.value;
+                const numericValue = inputValue.replace(/[^0-9]/g, "");
+                inputElement.value = numericValue;
+            }
+
+
+            function validateNameInput(inputElement) {
+                const inputValue = inputElement.value;
+                const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
+                inputElement.value = alphabeticValue;
+            }
+
+        
+        function validateForm() {
+        const requiredFields = ["firstname", "middlename", "lastname", "street_address", "datepicker_add_birthdate", "city", "state_province", "postal_zip_code", "email", "contact", "formFile"];
+        
+        for (const field of requiredFields) {
+            const fieldValue = document.getElementById(field).value.trim();
+            if (fieldValue === "") {
+            alert("All data are required to fill up.");
+            return false;
+            }
+
+            if (field === "contact") {
+            if (fieldValue.length !== 11) {
+                alert("Phone number must be exactly 11 digits long. Please try again.");
+                return false;
+            }
+
+            // Check if the phone number starts with "09"
+            if (!fieldValue.startsWith("09")) {
+                alert("Phone number must start with '0' and followed by'9'. Please try again.");
+                return false;
+            }
+            }
+
+            if (["firstname", "middlename", "lastname"].includes(field) && fieldValue.length < 2) {
+            alert(`${field.charAt(0).toUpperCase() + field.slice(1)} must be at least 2 characters long. Please try again.`);
+            return false;
+            }
+
+        if (field === "email") {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(fieldValue)) {
+                alert("Please enter a valid email address. Please try again.");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
+            
 $(document).ready(function() {
     $('#datepicker_add').keydown(function(event) {
         event.preventDefault(); 
@@ -566,51 +681,6 @@ $(document).ready(function() {
 	$('.text-jqte').jqte();
 
 
-        function validateContactInput(inputElement) {
-                const inputValue = inputElement.value;
-                const numericValue = inputValue.replace(/[^0-9]/g, "");
-                inputElement.value = numericValue;
-            }
-
-
-            function validateNameInput(inputElement) {
-                const inputValue = inputElement.value;
-                const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
-                inputElement.value = alphabeticValue;
-            }
-
-        
-                function validateForm() {
-                const requiredFields = ["firstname", "middlename", "lastname", "street_address", "datepicker_add_birthdate", "city", "state_province", "postal_zip_code", "email", "contact", "formFile"];
-                
-                for (const field of requiredFields) {
-                    const fieldValue = document.getElementById(field).value.trim();
-                    if (fieldValue === "") {
-                    alert("All data are required to fill up.");
-                    return false;
-                    }
-
-                    if (field === "contact") {
-                    if (fieldValue.length !== 11) {
-                        alert("Phone number must be exactly 11 digits long. Please try again.");
-                        return false;
-                    }
-
-                    // Check if the phone number starts with "09"
-                    if (!fieldValue.startsWith("09")) {
-                        alert("Phone number must start with '0' and followed by'9'. Please try again.");
-                        return false;
-                    }
-                    }
-
-                    if (["firstname", "middlename", "lastname"].includes(field) && fieldValue.length < 2) {
-                    alert(`${field.charAt(0).toUpperCase() + field.slice(1)} must be at least 2 characters long. Please try again.`);
-                    return false;
-                    }
-                }
-
-                return true;
-                }
 });
 
 </script>

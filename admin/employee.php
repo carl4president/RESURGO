@@ -62,7 +62,7 @@
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT *, employees.id AS empid FROM employees LEFT JOIN vacancy ON vacancy.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id";
+                    $sql = "SELECT *, employees.id AS empid FROM employees LEFT JOIN vacancy ON vacancy.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.status = 0";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
                       ?>
@@ -108,34 +108,33 @@
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function(){
-  $('.edit').click(function(e){
+
+  $('.box-body').on('click', '.edit', function(e){
     e.preventDefault();
     $('#edit').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
 
-  $('.delete').click(function(e){
+  $('.box-body').on('click', '.delete', function(e){
     e.preventDefault();
     $('#delete').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
 
-  $('.view').click(function(e){
+  $('.box-body').on('click', '.view', function(e){
     e.preventDefault();
     $('#view').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-  
 
-  $('.photo').click(function(e){
+  $('.box-body').on('click', '.photo', function(e){
     e.preventDefault();
     var id = $(this).data('id');
     getRow(id);
   });
-
 });
 
 function getRow(id){

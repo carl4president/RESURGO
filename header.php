@@ -1,3 +1,11 @@
+<?php
+  session_start();
+  if(isset($_SESSION['employee'])){
+    header('location:home.php');
+  }  else if(isset($_SESSION['admin'])){
+    header('location:../admin/home.php');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +23,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
     <script src="script/chat_script.js" defer></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
+    
+      	<script type="text/javascript">
+      var onloadCallback = function() {
+        grecaptcha.render('html_element', {
+          'sitekey' : '6LemGMIpAAAAAGnGqqWJLvaHEvlsjdbgiqg843Fv'
+        });
+      };
+    </script>
 
 </head>
 <body>
@@ -39,7 +56,7 @@
                 <li><a href="requirement_procedures.php">Online Application Requirements</a></li>
             
                 <li><a href="application_portal/vacancy/index.php">Careers</a></li>
-                <li><a href="employee_portal/index.php">Login</a></li>
+                <li><a href="../../employee_portal/index.php">Login</a></li>
                 <a href="#" id="close"><i class="fas fa-times"></i></a>
             </ul>
     
@@ -48,29 +65,9 @@
          <i id="bar" class="fa fa-outdent"></i>
          </div>
     </section>
-    <section id="chatbot-sec">
-        <button class="chatbot-toggler">
-      <span class="material-symbols-rounded">mode_comment</span>
-      <span class="material-symbols-outlined">close</span>
-    </button>
-    <div class="chatbot">
-      <header>
-        <h2>Chatbot</h2>
-        <span class="close-btn material-symbols-outlined">close</span>
-      </header>
-      <div class="form">
-            <div class="bot-inbox inbox">
-                <div class="icon">
-                    <span class="material-symbols-outlined">smart_toy</span>
-                </div>
-                <div class="msg-header">
-                    <p>Hello there, how can I help you?</p>
-                </div>
-            </div>
-        </div>
-      <div class="chat-input">
-        <input id="data" type="text" placeholder="Enter a message..." spellcheck="false" required>
-        <button id="send-btn">Send</button>
-      </div>
-      </div>
-</section>
+    
+<?php
+  include 'chatbot.php';
+?>
+
+

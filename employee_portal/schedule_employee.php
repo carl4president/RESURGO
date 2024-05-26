@@ -71,7 +71,7 @@
                         <tr>
                           <td>".$row['employee_id']."</td>
                           <td>".$row['firstname'].' '.$row['lastname']."</td>
-                          <td>".date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out']))."</td>
+                          <td>".'AM: ' . date('h:i A', strtotime($row['time_in_AM'])) . ' - ' . date('h:i A', strtotime($row['time_out_AM'])) . '<br>PM: ' . date('h:i A', strtotime($row['time_in_PM'])) . ' - ' . date('h:i A', strtotime($row['time_out_PM']))."</td>
                         </tr>
                       ";
                     }

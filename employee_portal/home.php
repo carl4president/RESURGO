@@ -147,11 +147,11 @@
   $ontime = array();
   $late = array();
   for( $m = 1; $m <= 12; $m++ ) {
-    $sql = "SELECT * FROM attendance WHERE employee_id = '$employee' AND MONTH(date) = '$m' AND status = 1 $and";
+    $sql = "SELECT * FROM attendance WHERE employee_id = '$employee' AND MONTH(date) = '$m' AND time_in_AM_status = 1 $and";
     $oquery = $conn->query($sql);
     array_push($ontime, $oquery->num_rows);
 
-    $sql = "SELECT * FROM attendance WHERE employee_id = '$employee' AND MONTH(date) = '$m' AND status = 0 $and";
+    $sql = "SELECT * FROM attendance WHERE employee_id = '$employee' AND MONTH(date) = '$m' AND time_in_AM_status = 0 $and";
     $lquery = $conn->query($sql);
     array_push($late, $lquery->num_rows);
 

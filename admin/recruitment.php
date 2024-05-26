@@ -75,7 +75,7 @@ $result_applications = mysqli_query($conn, $query_applications);
                 <?php
                   
                   $sql = "SELECT a.*, v.position, v.availability FROM application a
-                      INNER JOIN vacancy v ON v.id = a.position_id";
+                      INNER JOIN vacancy v ON v.id = a.position_id WHERE a.status = 0";
                     $query = $conn->query($sql);
 
                     while ($row = $query->fetch_assoc()) {
@@ -122,7 +122,7 @@ $result_applications = mysqli_query($conn, $query_applications);
                                           data-email='" . $row['email'] . "'" . (($row['process_id'] == 3) ? 'disabled' : '') . ">
                                           <i class='fa fa-comments'></i> Interview
                                       </button>
-                                      <button class='btn btn-success btn-sm btn-flat accept drpd-btn' type='submit' data-id='" . $row['id'] . "'><i class='fa fa-user-plus'></i> Accept</button>
+                                      <button class='btn btn-success btn-sm btn-flat accept drpd-btn' type='submit' data-id='" . $row['id'] . "'" . (($row['process_id'] != 3) ? 'disabled' : '') . "><i class='fa fa-user-plus'></i> Accept</button>
                                       <button class='btn btn-danger btn-sm btn-flat reject drpd-btn' type='submit' data-id='" . $row['id'] . "'><i class='fa fa-user-times'></i> Reject</button>";
                                     }
                                     echo "
@@ -155,16 +155,8 @@ $result_applications = mysqli_query($conn, $query_applications);
                                       <input type='hidden' name='middlename' value='" . $row['middlename'] . "'>
                                       <input type='hidden' name='lastname' value='" . $row['lastname'] . "'>
                                       <input type='hidden' name='email' value='" . $row['email'] . "'>
-                                      <input type='hidden' name='gender' value='" . $row['gender'] . "'>
-                                      <input type='hidden' name='phone' value='" . $row['contact_info'] . "'>
                                       <input type='hidden' name='position' value='" . $row['position'] . "'>
                                       <input type='hidden' name='position_id' value='" . $row['position_id'] . "'>
-                                      <input type='hidden' name='street_address' value='" . $row['street_address'] ."'>
-                                      <input type='hidden' name='city' value='" . $row['city'] . "'>
-                                      <input type='hidden' name='state_province' value='" . $row['state_province'] . "'>
-                                      <input type='hidden' name='postal_zip_code' value='" . $row['postal_zip_code'] . "'>
-                                      <input type='hidden' name='birthdate' value='" . $row['birthdate'] . "'>
-                                      <input type='hidden' name='resume' value='" . $row['resume'] . "'>
                                           <button class='btn btn-danger btn-sm btn-flat drpd-btn' type='submit' name='delete'>
                                               <i class='fa fa-trash'></i> Archive
                                           </button>
@@ -198,7 +190,7 @@ $result_applications = mysqli_query($conn, $query_applications);
 <?php include 'includes/scripts.php'; ?> 
 <script>
 $(function(){
-  $('.edit').click(function(e){
+  $('.box-body').on('click', '.edit', function(e){
     e.preventDefault();
     $('#edit').modal('show');
     var id = $(this).data('id');
@@ -206,79 +198,76 @@ $(function(){
     getRow(id);
   });
 
-  $('.view_resume').click(function(e){
+  $('.box-body').on('click', '.view_resume', function(e){
     e.preventDefault();
     $('#view_resume').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.receive').click(function (e) {
+  $('.box-body').on('click', '.receive', function(e) {
     e.preventDefault();
     $('#receive').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.process').click(function (e) {
+  $('.box-body').on('click', '.process', function(e) {
     e.preventDefault();
     $('#process').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.send_email').click(function (e) {
+  $('.box-body').on('click', '.send_email', function(e) {
     e.preventDefault();
     $('#send_email').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.reject').click(function (e) {
+  $('.box-body').on('click', '.reject', function(e) {
     e.preventDefault();
     $('#reject').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.accept').click(function (e) {
+  $('.box-body').on('click', '.accept', function(e) {
     e.preventDefault();
     $('#accept').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
+  $('.box-body').on('click', '.interview', function(e) {
+    e.preventDefault();
+    $('#interviewModal').modal('show');
+    var id = $(this).data('id');
+    var applicantid = $(this).data('applicantid');
+    var applicantName = $(this).data('applicantname');
+    var position = $(this).data('position');
+    var email = $(this).data('email');
+    $('#applicantName').text(applicantName);
+    $('#interviewPosition').text(position);
 
-    $('.interview').click(function(e) {
-      e.preventDefault();
-      $('#interviewModal').modal('show');
-      var id = $(this).data('id');
-      var applicantid = $(this).data('applicantid');
-      var applicantName = $(this).data('applicantname');
-      var position = $(this).data('position');
-      var email = $(this).data('email');
-      $('#applicantName').text(applicantName);
-      $('#interviewPosition').text(position);
-
-
-     $('#applicationId').val(id);
+    $('#applicationId').val(id);
     $('#applicantNameInput').val(applicantName);
     $('#applicantIdInput').val(applicantid);
     $('#interviewPositionInput').val(position);
     $('#interviewApplicant_idInput').val(id);
     $('#interviewEmail').val(email);
-    });
+  });
 
-    $('.view').click(function(e){
+  $('.box-body').on('click', '.view', function(e) {
     e.preventDefault();
     $('#view').modal('show');
     var id = $(this).data('id');
     var position = $(this).data('position');
     getRow(id, position);
-    });
-
-
+  });
 });
+
 
 function getRow(id, position) {
   console.log('ID passed to getRow function:', id);

@@ -25,7 +25,13 @@
 
         <script src="admin/assets/vendor/jquery/jquery.min.js"></script>
         <script src="admin/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
         <link rel="stylesheet" href="css/vacancy_style.css">
+        <script src="../../script/chat_script.js" defer></script>
+        
+        
 
     <script type="text/javascript" src="admin/assets/js/select2.min.js"></script>
 

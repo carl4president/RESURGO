@@ -130,30 +130,28 @@
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function(){
-  $('.cancel').click(function(e){
+  
+  $('.box-body').on('click', '.cancel', function(e){
     e.preventDefault();
     $('#cancel').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-  
-    $('.retrieve').click(function(e){
+
+  $('.box-body').on('click', '.retrieve', function(e){
     e.preventDefault();
     $('#retrieve').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
 
-  $('.edit').click(function(e){
+  $('.box-body').on('click', '.edit', function(e){
     e.preventDefault();
     $('#edit').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-
-
 });
-
 
 function getRow(id){
   $.ajax({

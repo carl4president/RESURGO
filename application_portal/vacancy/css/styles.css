@@ -39,6 +39,8 @@
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  --palatino: 'Palatino-Bold';
 }
 
 *,
@@ -201,10 +203,6 @@ img {
   border-style: none;
 }
 
-svg {
-  overflow: hidden;
-  vertical-align: middle;
-}
 
 table {
   border-collapse: collapse;
@@ -360,8 +358,8 @@ template {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
-  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: 500;
+  font-family: var(--palatino);
+  font-weight: 600;
   line-height: 1.2;
 }
 

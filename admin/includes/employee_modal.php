@@ -1,3 +1,33 @@
+<style>
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #800;
+    color: white;
+    border: 1px solid #800;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-file-upload:hover {
+    background-color: #590000;
+    border-color: #590000;
+}
+#file-name-employee {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #333;
+}
+</style>
+
 <!-- Add -->
 <div class="modal fade" id="addnew" data-backdrop="static">
     <div class="modal-dialog">
@@ -8,7 +38,7 @@
             	<h4 class="modal-title"><b>Add Employee</b></h4>
           	</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="employee_add.php" enctype="multipart/form-data">
+            	<form class="form-horizontal" method="POST" action="employee_add.php" enctype="multipart/form-data" onsubmit="return validateForm()">
           		  <div class="form-group">
                   	<label for="firstname" class="col-sm-3 control-label">Firstname</label>
 
@@ -50,14 +80,15 @@
                     <label for="contact" class="col-sm-3 control-label">Contact Info</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="contact" name="contact" oninput="validateContactInput(this)">
+                      <input type="text" class="form-control" id="contact" name="contact" inputmode="numeric" minlength="11" maxlength="11" required 
+                           pattern="0[0-9]{10}" title="Phone number must be exactly 11 digits long and start with 0 (e.g., 09123456789)" oninput="validateContactInput(this)">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="contact" class="col-sm-3 control-label">Email</label>
 
                     <div class="col-sm-9">
-                      <input type="email" class="form-control" id="email" name="email">
+                      <input type="email" class="form-control" id="email" name="email" placeholder="ex:name@gmail.com" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address (e.g., name@gmail.com)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -71,24 +102,21 @@
                       </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="position" class="col-sm-3 control-label">Position</label>
-
-                    <div class="col-sm-9">
-                      <select class="form-control" name="position" id="position" required>
-                        <option value="" selected>- Select -</option>
-                        <?php
-                          $sql = "SELECT * FROM vacancy";
-                          $query = $conn->query($sql);
-                          while($prow = $query->fetch_assoc()){
-                            echo "
-                              <option value='".$prow['id']."'>".$prow['position']."</option>
-                            ";
-                          }
-                        ?>
-                      </select>
+                 <div class="form-group">
+                        <label for="position" class="col-sm-3 control-label">Position</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="position_id" id="position" required>
+                                <option value="" selected>- Select -</option>
+                                <?php
+                                    $sql = "SELECT * FROM vacancy";
+                                    $query = $conn->query($sql);
+                                    while ($prow = $query->fetch_assoc()) {
+                                        echo "<option value='".$prow['id']."|".$prow['position']."'>".$prow['position']."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
                     </div>
-                </div>
                 <div class="form-group">
                     <label for="schedule" class="col-sm-3 control-label">Schedule</label>
 
@@ -105,13 +133,6 @@
                           }
                         ?>
                       </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="photo" class="col-sm-3 control-label">Photo</label>
-
-                    <div class="col-sm-9">
-                      <input type="file" name="photo" id="photo">
                     </div>
                 </div>
           	</div>
@@ -134,7 +155,7 @@
             	<h4 class="modal-title"><b><span class="employee_id"></span></b></h4>
           	</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="employee_edit.php">
+            	<form class="form-horizontal" method="POST" action="employee_edit.php" onsubmit="return validateForm()">
             		<input type="hidden" class="empid" name="id">
                 <div class="form-group">
                     <label for="edit_firstname" class="col-sm-3 control-label">Firstname</label>
@@ -300,7 +321,11 @@
                     <label for="photo" class="col-sm-3 control-label">Photo</label>
 
                     <div class="col-sm-9">
-                      <input type="file" id="photo" name="photo" required>
+                        <input type="file" id="photoEmployee" name="photo" onchange="fileEmployee()" required>
+                        <label for="photoEmployee" class="custom-file-upload">
+                            Choose File
+                        </label>
+                        <span id="file-name-employee">No file chosen</span>
                     </div>
                 </div>
             </div>
@@ -346,16 +371,28 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-        $(document).ready(function() {
-            $('#datepicker_add_birthdate').keydown(function(event) {
-                event.preventDefault(); // Prevent keyboard input
-            })
-    
-            $('#datepicker_edit_birthdate').keydown(function(event) {
-                event.preventDefault(); // Prevent keyboard input
-            })
-
-        function validateContactInput(inputElement) {
+        function fileEmployee() {
+                var fileInput = document.getElementById('photoEmployee');
+                var fileNameSpan = document.getElementById('file-name-employee');
+            
+                if (fileInput.files && fileInput.files.length > 0) {
+                    var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                    var fileName = fileInput.files[0].name;
+            
+                    if (!allowedExtensions.exec(fileName)) {
+                        alert('Please upload an image file with extension .jpg, .jpeg, or .png.');
+                        fileInput.value = '';
+                        fileNameSpan.textContent = 'No file chosen';
+                        return false;
+                    } else {
+                        fileNameSpan.textContent = fileName;
+                    }
+                } else {
+                    fileNameSpan.textContent = 'No file chosen';
+                }
+            }
+            
+                    function validateContactInput(inputElement) {
                 const inputValue = inputElement.value;
                 const numericValue = inputValue.replace(/[^0-9]/g, "");
                 inputElement.value = numericValue;
@@ -396,9 +433,29 @@
                     alert(`${field.charAt(0).toUpperCase() + field.slice(1)} must be at least 2 characters long. Please try again.`);
                     return false;
                     }
-                }
 
-                return true;
+        if (field === "email") {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(fieldValue)) {
+                    alert("Please enter a valid email address. Please try again.");
+                    return false;
                 }
-        });
+            }
+        }
+
+        return true;
+    }
+            
+            
+        $(document).ready(function() {
+            $('#datepicker_add_birthdate').keydown(function(event) {
+                event.preventDefault(); // Prevent keyboard input
+            })
+    
+            $('#datepicker_edit_birthdate').keydown(function(event) {
+                event.preventDefault(); // Prevent keyboard input
+            })
+            
+
+    });
 </script>

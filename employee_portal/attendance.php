@@ -69,7 +69,7 @@ if(isset($_POST['employee'])){
             $result = $stmt->get_result();
             
             $arow = $result->fetch_assoc(); 
-                if ($arow['time_in_PM'] != '00:00:00') {
+            if ($arow && $arow['time_in_PM'] != '00:00:00') {
                 $output['error'] = true;
                 $output['message'] = 'You have already timed in for today afternoon';
             }
@@ -119,7 +119,7 @@ if(isset($_POST['employee'])){
                 
             }
         }
-        else if($status == 'out_am'){
+    else if($status == 'out_am'){
             $sql = "SELECT *, attendance.id AS uid FROM attendance 
                     LEFT JOIN employees ON employees.employee_id = attendance.employee_id 
                     WHERE attendance.employee_id = ? AND date = ? AND time_in_AM IS NOT NULL";
@@ -276,7 +276,7 @@ if(isset($_POST['employee'])){
                     }
                 }
             }
-        }         else if($status == 'out_pm'){
+        }   else if($status == 'out_pm'){
             $sql = "SELECT *, attendance.id AS uid FROM attendance 
                     LEFT JOIN employees ON employees.employee_id = attendance.employee_id 
                     WHERE attendance.employee_id = ? AND date = ? AND time_in_PM IS NOT NULL";

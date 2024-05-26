@@ -1,4 +1,32 @@
+<style>
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #800;
+    color: white;
+    border: 1px solid #800;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
+.custom-file-upload:hover {
+    background-color: #590000;
+    border-color: #590000;
+}
+#file-name-vacancy {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #333;
+}
+</style>
 <div class="modal fade" id="edit" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -188,7 +216,7 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title"><b><span class="del_employee_name"></span></b></h4>
+              <h4 class="modal-title"><b><span>Edit Vacancy Photo</span></b></h4>
             </div>
             <div class="modal-body">
               <form class="form-horizontal" method="POST" action="vac_edit_photo.php" enctype="multipart/form-data">
@@ -197,7 +225,11 @@
                     <label for="photo" class="col-sm-3 control-label">Photo</label>
 
                     <div class="col-sm-9">
-                      <input type="file" id="photo" name="photo" required>
+                      <input type="file" id="photo_vacancy" name="photo" onchange="checkFileVacancy()" required>
+                      <label for="photo_vacancy" class="custom-file-upload">
+                            Choose File
+                        </label>
+                        <span id="file-name-vacancy">No file chosen</span>
                     </div>
                 </div>
             </div>
@@ -238,8 +270,28 @@
 
 
 <script>
+function checkFileVacancy() {
+        var fileInput = document.getElementById('photo_vacancy');
+        var fileNameSpan = document.getElementById('file-name-vacancy');
+
+        if (fileInput.files && fileInput.files.length > 0) {
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+            var fileName = fileInput.files[0].name;
+
+            if (!allowedExtensions.exec(fileName)) {
+                alert('Please upload an image file with extension .jpg, .jpeg, or .png.');
+                fileInput.value = '';
+                fileNameSpan.textContent = 'No file chosen';
+                return false;
+            } else {
+                fileNameSpan.textContent = fileName;
+            }
+            
+        } else {
+            fileNameSpan.textContent = 'No file chosen';
+        }
+    }
 	$('.text-jqte').jqte();
-	
 </script>
 
 

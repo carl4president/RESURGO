@@ -65,8 +65,9 @@
                       echo "
                         <tr>
                           <td>".$row['employee_id']."</td>
-                          <td>".$row['firstname'].' '.$row['lastname']."</td>
-                          <td>".date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out']))."</td>
+                        <td>".$row['firstname'].' '.$row['lastname']."</td>
+                        <td>".'AM: ' . date('h:i A', strtotime($row['time_in_AM'])) . ' - ' . date('h:i A', strtotime($row['time_out_AM'])) . '<br>PM: ' . date('h:i A', strtotime($row['time_in_PM'])) . ' - ' . date('h:i A', strtotime($row['time_out_PM']))."</td>
+
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['empid']."'><i class='fa fa-edit'></i> Edit</button>
                           </td>
@@ -106,7 +107,7 @@ function getRow(id){
     success: function(response){
       $('.employee_name').html(response.firstname+' '+response.lastname);
       $('#schedule_val').val(response.schedule_id);
-      $('#schedule_val').html(response.time_in+' '+response.time_out);
+      $('#schedule_val').html(response.time_in_AM+' '+response.time_out_AM+' '+response.time_out_PM+' '+response.time_out_PM);
       $('#empid').val(response.empid);
     }
   });

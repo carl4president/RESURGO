@@ -128,9 +128,9 @@ $result_applications = mysqli_query($conn, $query_applications);
 </div>
 <?php include 'includes/scripts.php'; ?> 
 <script>
-$('.edit_interview').click(function(e) {
-      e.preventDefault();
-      $('#interviewModal').modal('show');
+  $('.box-body').on('click', '.edit_interview', function(e) {
+    e.preventDefault();
+    $('#interviewModal').modal('show');
       var id = $(this).data('id');
       var applicationid = $(this).data('applicationid');
       var position = $(this).data('position');

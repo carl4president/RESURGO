@@ -141,33 +141,32 @@ $result_applications = mysqli_query($conn, $query_applications);
 <?php include 'includes/scripts.php'; ?> 
 <script>
 $(function(){
-  $('.edit').click(function(e){
+  $('.box-body').on('click', '.edit', function(e){
     e.preventDefault();
     $('#edit').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
 
-  $('.view').click(function(e){
+  $('.box-body').on('click', '.view', function(e){
     e.preventDefault();
     $('#view').modal('show');
     var id = $(this).data('id');
     getRow(id);
-    });
+  });
 
-    $('.delete').click(function(e){
+  $('.box-body').on('click', '.delete', function(e){
     e.preventDefault();
     $('#delete').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-  $('.photo').click(function(e){
+
+  $('.box-body').on('click', '.photo', function(e){
     e.preventDefault();
     var id = $(this).data('id');
     getRow(id);
   });
-
-
 });
 
 function html_entity_decode(encodedString) {
@@ -190,6 +189,7 @@ function getRow(id){
       $('#edit_vac_details').closest('.jqte').find('.jqte_editor').html(response.details);
       $('#edit_availability').val(response.availability);
       $('#edit_position').val(response.position);
+      $('#photo_vacancy').val(response.banner);
       $('#edit_status').find('option[value="' + response.status + '"]').prop('selected', true);
       $('#vac_val').html(response.description);
       $('#vac_details_val').html(response.details);

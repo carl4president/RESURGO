@@ -2,5 +2,5 @@
 	session_start();
 	session_destroy();
 
-	header('location: ../employee_portal/index.php');
+	header('location: index.php');
 ?>

@@ -1,5 +1,6 @@
 <?php
 include 'includes/session.php';
+include 'phpqrcode/qrlib.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -22,14 +23,18 @@ if (isset($_POST['accept'])) {
     $position = isset($_POST['position']) ? $_POST['position'] : null;
     $position_id = isset($_POST['position_id']) ? $_POST['position_id'] : null;
     $hireDate = date('Y-m-d');
-
-
     
+
     $username = generateRandomUsername(); 
     $password = generateRandomPassword(); 
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+    $employee_id = generateRandomEmployeeID();
+    
+    $qrContent = "$employee_id";
+    $qrFileName = "temp/$employee_id.png"; 
+    QRcode::png($qrContent, $qrFileName);
 
     
     $mail = new PHPMailer(true);
@@ -51,30 +56,22 @@ if (isset($_POST['accept'])) {
 
         $mail->Subject = 'Application Accepted';
 
-        $message .= '';
-        $message .= '<p>Dear ' . $firstname . ' ' . $middlename . ' ' . $lastname . ',</p>';
-        $message .= '<p>Congratulations! You have successfully applied for the position of ' . $position . ' at our school. We are pleased to inform you that your application has been accepted, and we are excited to welcome you to OLSHCO.</p>';
-        
-        $message .= '<p>Here are your login credentials:</p>';
-        $message .= '<ul>';
-        $message .= '<li><strong>Username:</strong> ' . $username . '</li>';
-        $message .= '<li><strong>Password:</strong> ' . $password . '</li>';
-        $message .= '</ul>';
-        
-        $message .= '<p>You can now log in to our employee portal and access your profile and relevant information. Your dedication to ' . $position . ' will undoubtedly contribute to the success of our school, and we look forward to the valuable contributions you will bring to our team.</p>';
-        
-        $message .= '<p>Click <a href="https://resurgo.xyz/employee_portal/index.php">here</a> to log in.</p>';
-        
-        $message .= '<p>Thank you for choosing our school. We extend a warm welcome to you, and we look forward to a successful and fulfilling collaboration.</p>';
-        $message .= '<p>Best regards,</p>';
-        $message .= '<p>OLSHCO</p>';
+        $message = "<p>Dear $firstname $middlename $lastname,</p>";
+        $message .= "<p>Congratulations! You have successfully applied for the position of $position at our school. We are pleased to inform you that your application has been accepted.</p>";
+        $message .= "<p>Here are your login credentials:</p><ul>";
+        $message .= "<li><strong>Username:</strong> $username</li>";
+        $message .= "<li><strong>Password:</strong> $password</li></ul>";
+        $message .= "<p>Click <a href='https://resurgo.xyz/employee_portal/index.php'>here</a> to log in.</p>";
+        $message .= "<p>Your QR Code for attendance:</p><img src='cid:qrCodeImg' alt='QR Code'>";
+        $message .= "<p>Thank you for choosing our school. We look forward to a successful collaboration.</p>";
+        $message .= "<p>Best regards,<br>OLSHCO</p>";
 
         $mail->Body = $message;
+        
+        $mail->AddEmbeddedImage($qrFileName, 'qrCodeImg', 'qr_code.png');
 
         $mail->send();
         echo 'Acceptance Email has been sent successfully!';
-
-        $employee_id = generateRandomEmployeeID();
 
         $updateVacancySql = "UPDATE vacancy SET availability = availability - 1 WHERE id = ?";
         $stmtUpdateVacancy = $conn->prepare($updateVacancySql);
@@ -100,7 +97,7 @@ if (isset($_POST['accept'])) {
                     $deleteStmt = $conn->prepare($deleteQuery);
                     $deleteStmt->bind_param("i", $id);
                     $deleteResult = $deleteStmt->execute();
-    
+                    
                     $_SESSION['success'] = 'Application Accepted Email Send Successfully';
                 } else {
                     echo 'Error deleting applicant record: ' . $deleteStmt->error;
@@ -121,7 +118,6 @@ if (isset($_POST['accept'])) {
     $conn->close();
     header('location:recruitment.php');
 }
-
 if (isset($_POST['receive'])) {
     $id = isset($_POST['id']) ? $_POST['id'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : null;

@@ -11,21 +11,13 @@ require 'phpmailer/src/SMTP.php';
 if (isset($_POST['delete'])) {
     
     $id = $_POST['id'];
-    $applicant_id = $_POST['applicant_id'];
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
-    $gender = $_POST['gender'];
-    $phone = $_POST['phone'];
     $position_id = $_POST['position_id'];
     $position = $_POST['position'];
-    $street_address = $_POST['street_address'];
-    $city = $_POST['city'];
-    $state_province = $_POST['state_province'];
-    $postal_zip_code = $_POST['postal_zip_code'];
-    $birthdate = $_POST['birthdate'];
-    $resume = $_POST['resume'];
+    $status = 1;
 
     $mail = new PHPMailer(true);
 
@@ -60,33 +52,15 @@ if (isset($_POST['delete'])) {
         $mail->Body = $message;
 
         $mail->send();
-        $_SESSION['success'] = 'Application Deleted email has been sent successfully!';
 
-        $insertQuery = "INSERT INTO application_archive 
-                        (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $updateQuery = "UPDATE application SET status = ? WHERE id = ?";
         
-        $stmt = mysqli_prepare($conn, $insertQuery);
+        $stmt = mysqli_prepare($conn, $updateQuery);
         
-        mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id, $applicant_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $street_address, $city, $state_province, $postal_zip_code, $birthdate, $resume);
+        mysqli_stmt_bind_param($stmt, "is", $status, $id);
         
-        $insertResult = mysqli_stmt_execute($stmt);
-        
-        if ($insertResult) {
-         $_SESSION['success'] = 'Applicant Application Record archived successfully!';
-        
-        $stmt = $conn->prepare("DELETE FROM application WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $deleteResult = $stmt->execute();
-        
-        if ($deleteResult) {
-            echo " Record deleted from applications table.";
-        } else {
-            echo "Error deleting record from applications table: " . mysqli_error($conn);
-        }
-    } else {
-        echo "Error archiving record: " . mysqli_error($conn);
-    }
+        $updateResult = mysqli_stmt_execute($stmt);
+        $_SESSION['success'] = 'Applicant application record archived successfully!';
 
 } catch (Exception $e) {
     echo 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo;
@@ -98,50 +72,17 @@ if (isset($_POST['delete'])) {
 }else if (isset($_POST['retrieve'])) {
     
     $id = $_POST['id'];
-    $applicant_id = $_POST['applicant_id'];
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
-    $gender = $_POST['gender'];
-    $phone = $_POST['phone'];
-    $position_id = $_POST['position_id'];
-    $street_address = $_POST['street_address'];
-    $city = $_POST['city'];
-    $state_province = $_POST['state_province'];
-    $postal_zip_code = $_POST['postal_zip_code'];
-    $birthdate = $_POST['birthdate'];
-    $resume = $_POST['resume'];
+    $status = 0;
 
-        $insertQuery = "INSERT INTO application 
-                (id, applicant_id, firstname, middlename, lastname, email, gender, contact_info, position_id, street_address, city, state_province, postal_zip_code, birthdate, resume)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $updateQuery = "UPDATE application SET status = ? WHERE id = ?";
 
-        $stmt = mysqli_prepare($conn, $insertQuery);
-        mysqli_stmt_bind_param($stmt, "sssssssssssssss", $id, $applicant_id, $firstname, $middlename, $lastname, $email, $gender, $phone, $position_id, $street_address, $city, $state_province, $postal_zip_code, $birthdate, $resume);
+        $stmt = mysqli_prepare($conn, $updateQuery);
         
-        $insertResult = mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_param($stmt, "is", $status, $id);
         
-        if ($insertResult) {
-
-        $_SESSION['success'] = 'Applicant Application Record retrieved successfully!';
+        $updateResult = mysqli_stmt_execute($stmt);
         
-        
-        $deleteQuery = "DELETE FROM application_archive WHERE id = ?";
-        $statement = mysqli_prepare($conn, $deleteQuery);
-        mysqli_stmt_bind_param($statement, "s", $id);
-        mysqli_stmt_execute($statement);
-        $deleteResult = mysqli_stmt_affected_rows($statement);
-        if ($deleteResult) {
-
-            echo " Record deleted from applications table.";
-        } else {
-            echo "Error deleting record from applications table: " . mysqli_error($conn);
-        }
-    } else {
-        echo "Error archiving record: " . mysqli_error($conn);
-    }
-
+        $_SESSION['success'] = 'Applicant application record retrieved successfully!';
     
     mysqli_close($conn);
     header('location: recruitment_archive.php');

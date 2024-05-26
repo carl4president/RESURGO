@@ -1,3 +1,32 @@
+<style>
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #800;
+    color: white;
+    border: 1px solid #800;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-file-upload:hover {
+    background-color: #590000;
+    border-color: #590000;
+}
+#file-name-profile {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #333;
+}
+</style>
 <!-- Add -->
 <div class="modal fade" id="profile">
     <div class="modal-dialog">
@@ -41,7 +70,11 @@
                     <label for="photo" class="col-sm-3 control-label">Photo:</label>
 
                     <div class="col-sm-9">
-                      <input type="file" id="photo" name="photo">
+                      <input type="file" id="photo" name="photo" onchange="checkFile()">
+                        <label for="photo" class="custom-file-upload">
+                            Choose File
+                        </label>
+                        <span id="file-name-profile">No file chosen</span>
                     </div>
                 </div>
                 <hr>
@@ -61,3 +94,27 @@
         </div>
     </div>
 </div>
+
+    <script>
+    function checkFile() {
+        var fileInput = document.getElementById('photo');
+        var fileNameSpan = document.getElementById('file-name-profile');
+
+        if (fileInput.files && fileInput.files.length > 0) {
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+            var fileName = fileInput.files[0].name;
+
+            if (!allowedExtensions.exec(fileName)) {
+                alert('Please upload an image file with extension .jpg, .jpeg, or .png.');
+                fileInput.value = '';
+                fileNameSpan.textContent = 'No file chosen';
+                return false;
+            } else {
+                fileNameSpan.textContent = fileName;
+            }
+        } else {
+            fileNameSpan.textContent = 'No file chosen';
+        }
+    }
+</script>
+

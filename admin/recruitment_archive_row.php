@@ -3,7 +3,7 @@ include 'includes/session.php';
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
-    $sql = "SELECT a.*, v.position FROM application_archive a
+    $sql = "SELECT a.*, v.position FROM application a
             INNER JOIN vacancy v ON v.id = a.position_id
             WHERE a.id = ?";
     $stmt = $conn->prepare($sql);

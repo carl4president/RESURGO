@@ -3,7 +3,7 @@
 
 	if(isset($_POST['id'])){
 		$id = $_POST['id'];
-		$sql = "SELECT *, employees_archive.id as empid FROM employees_archive LEFT JOIN vacancy ON vacancy.id=employees_archive.position_id LEFT JOIN schedules ON schedules.id=employees_archive.schedule_id WHERE employees_archive.id = ?";
+		$sql = "SELECT *, employees.id as empid FROM employees LEFT JOIN vacancy ON vacancy.id=employees.position_id LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = ?";
 		$stmt = $conn->prepare($sql);
 		$stmt->bind_param("i", $id);
 		$stmt->execute();

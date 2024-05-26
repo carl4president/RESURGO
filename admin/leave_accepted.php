@@ -109,20 +109,19 @@
 <?php include 'includes/scripts.php'; ?> 
 <script>
 $(function(){
-    $('.retrieve').click(function(e){
+  $('.box-body').on('click', '.retrieve', function(e){
     e.preventDefault();
     $('#retrieve').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-  $('.delete').click(function(e){
+
+  $('.box-body').on('click', '.delete', function(e){
     e.preventDefault();
     $('#delete').modal('show');
     var id = $(this).data('id');
     getRow(id);
   });
-
-
 });
 
 

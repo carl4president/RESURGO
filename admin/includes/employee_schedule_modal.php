@@ -21,7 +21,7 @@
                           $query = $conn->query($sql);
                           while($srow = $query->fetch_assoc()){
                             echo "
-                              <option value='".$srow['id']."'>".$srow['time_in'].' - '.$srow['time_out']."</option>
+                              <option value='".$srow['id']."'>".$srow['time_in_AM'].' - '.$srow['time_out_AM'].' , '.$srow['time_in_PM'].' - '.$srow['time_out_PM']."</option>
                             ";
                           }
                         ?>

@@ -17,7 +17,8 @@ if (isset($_POST['add'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email format";
+        $_SESSION['error'] = "Invalid email format";
+        header('Location: recruitment.php');
         exit(); 
     }
 

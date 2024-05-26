@@ -63,29 +63,112 @@
 
 <script>
 $(document).ready(function(){
-            $("#send-btn").on("click", function(){
-                $value = $("#data").val();
-                $msg = '<div class="user-inbox inbox"><div class="msg-header"><p>'+ $value +'</p></div></div>';
-                $(".form").append($msg);
-                $("#data").val('');
-                
-                // start ajax code
-                $.ajax({
-                    url: 'message.php',
-                    type: 'POST',
-                    data: 'text='+$value,
-                    success: function(result){
-                        $replay = '<div class="bot-inbox inbox"><div class="icon"><span class="material-symbols-outlined">smart_toy</span></div><div class="msg-header"><p>'+ result +'</p></div></div>';
-                        $(".form").append($replay);
-                        // when chat goes down the scroll bar automatically comes to the bottom
-                        $(".form").scrollTop($(".form")[0].scrollHeight);
-                    }
-                });
+    
+    
+    function restoreChatHistory() {
+        var chatHistory = localStorage.getItem("chatHistory");
+        if (chatHistory) {
+            $(".form").html(chatHistory);
+        }
+    }
+    
+    
+    restoreChatHistory();
+    
+    const createChatLi = (message, className) => {
+    const chatLi = document.createElement("div");
+    chatLi.classList.add("inbox", className);
+    let chatContent;
+    if (className === "outgoing") {
+        chatContent = `<div class="user-inbox inbox"><div class="msg-header"><p>${message}</p></div></div>`;
+    } else if (className === "incoming") {
+        chatContent = `<div class="bot-inbox inbox"><div class="icon"><span class="material-symbols-outlined">smart_toy</span></div><div class="msg-header"><p>${message}</p></div></div>`;
+    } else { 
+        chatContent = `<div class="bot-inbox inbox"><div class="icon"><span class="material-symbols-outlined">smart_toy</span></div><div class="msg-header"><p>${message}</p></div></div>`;
+    }
+    chatLi.innerHTML = chatContent;
+    return chatLi; 
+    }
+    
+    $("#send-btn").on("click", function(){
+        $value = $("#data").val();
+        $msg = createChatLi($value, "outgoing");
+        $(".form").append($msg);
+        $("#data").val('');
+        
+        localStorage.setItem("chatHistory", $(".form").html());
+        
+        
+        displayThinking();
+        
+        setTimeout(() => {
+            $.ajax({
+                url: 'message.php',
+                type: 'POST',
+                data: 'text='+$value,
+                success: function(result){
+                    $(".thinking").remove(); 
+                    
+                    
+                    displayBotResponse(result);
+                }
             });
-            $('.apply-btn').click(function(){
-                window.location.href = 'application_portal/vacancy/index.php';
-            })
-        });
+        }, 3000); 
+    });
+    
+function displayThinking() {
+    const thinkingMessage = createChatLi("Thinking...", "incoming");
+    thinkingMessage.classList.add("thinking");
+    $(".form").append(thinkingMessage);
+    $(".form").scrollTop($(".form")[0].scrollHeight);
+
+    const thinkingText = "......";
+    let typedText = "";
+
+    for (let i = 0; i < thinkingText.length; i++) {
+        setTimeout(() => {
+            typedText += thinkingText[i];
+            $(".thinking .msg-header p").text(typedText);
+        }, i * 600); // Typing speed (milliseconds per dot)
+    }
+}
+
+
+
+    
+    function displayBotResponse(response) {
+        const $replay = createChatLi("", "incoming-bot");
+        $(".form").append($replay);
+        $(".form").scrollTop($(".form")[0].scrollHeight);
+    
+        
+        for (let i = 0; i < response.length; i++) {
+            setTimeout(() => {
+                $replay.querySelector(".msg-header p").textContent += response[i];
+                $(".form").scrollTop($(".form")[0].scrollHeight);
+                localStorage.setItem("chatHistory", $(".form").html());
+            }, i * 20); 
+        }
+    }
+    
+    $('.apply-btn').click(function(){
+        window.location.href = 'application_portal/vacancy/index.php';
+    })
+    $("#refresh").on("click", function(){
+        
+        $(".form > .inbox:not(.preserve)").remove();
+        localStorage.removeItem("chatHistory");
+    });
+    
+$("#refresh").on("mouseenter", function() {
+    $(this).append("<div class='tooltip'>Refresh</div>");
+}).on("mouseleave", function() {
+    $(this).find(".tooltip").remove();
+});
+
+
+    
+});
 </script>
 
 <script src="script/mobile_script.js"></script>

@@ -61,7 +61,12 @@
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT *, employees_archive.id AS empid FROM employees_archive LEFT JOIN vacancy ON vacancy.id=employees_archive.position_id LEFT JOIN schedules ON schedules.id=employees_archive.schedule_id";
+                    $sql = "SELECT *, employees.id AS empid 
+                            FROM employees 
+                            LEFT JOIN vacancy ON vacancy.id = employees.position_id 
+                            LEFT JOIN schedules ON schedules.id = employees.schedule_id 
+                            WHERE employees.status = 1";
+
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
                       ?>
