@@ -1,5 +1,5 @@
 <?php
-include 'includes/session.php';
+include '../employee_portal/includes/timezone.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -30,18 +30,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $IP = getUserIP();
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
+    $dateTime = date('Y-m-d H:i:s');
 
     if ($IP) {
         $filePath = 'detection.log';
-        $logEntry = "\nHackerIP: " . $IP . " username: " . $username . " password: " . $password;
+        $logEntry = "\nTimestamp: " . $dateTime . " HackerIP: " . $IP . " username: " . $username . " password: " . $password;
 
         if ($file = fopen($filePath, 'a')) {
             fwrite($file, $logEntry);
             fclose($file);
         }
 
-        header("Location: ../admin/Login.php");
-        exit();
+        $output['error'] = true;
+        $output['message'] = 'Invalid Credentials';
+        
     }
 }
+
+echo json_encode($output);
 ?>

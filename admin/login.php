@@ -12,145 +12,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OLSHCO ADMIN LOGIN</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="icon" href="../img/logo.png" type="image/icon type">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <style>
-      *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: url(../img/bg.jpg) no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-.wrapper{
-  width: 420px;
-  background: white;
-  border: 2px solid rgba(255, 255, 255, .2);
-  color: black;
-  border-radius: 12px;
-  padding: 30px 40px;
-}
-.wrapper h1{
-  font-size: 36px;
-  text-align: center;
-}
-.wrapper .input-box{
-  position: relative;
-  width: 100%;
-  height: 50px;
-  
-  margin: 30px 0;
-}
-.input-box input {
-  width: 100%;
-  height: 100%;
-  background: white;
-  border: 1px solid #5f0000;
-  outline: none;
-  border-radius: 40px;
-  font-size: 16px;
-  color: #000; 
-  padding: 20px 45px 20px 20px;
-}
-
-.input-box input:focus {
-    border: 1px solid #5f0000;
-}
-
-.input-box label {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    color: #4a4646;
-    pointer-events: none;
-    transition: 0.2s ease;
-}
-.input-box input:is(:focus, :valid) {
-    padding: 16px 15px 0;
-}
-.input-box input:is(:focus, :valid)~label {
-    transform: translateY(-120%);
-    color: maroon;
-    font-size: 0.75rem;
-}
-
-.input-box i{
-  position: absolute;
-  right: 10px;
-  top: 0;
-  font-size: 20px;
-
-}
-
-.wrapper .btn{
-  width: 100%;
-  height: 45px;
-  background: #5f0000;
-  border: none;
-  outline: none;
-  border-radius: 40px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-  cursor: pointer;
-  font-size: 16px;
-  color: #fff;
-  font-weight: 600;
-}
-.wrapper .register-link{
-  font-size: 14.5px;
-  text-align: center;
-  margin: 20px 0 15px;
-
-}
-.register-link p a{
-  color: #337ab7;
-  text-decoration: none;
-  font-weight: 600;
-}
-.register-link p a:hover{
-  text-decoration: underline;
-}
-
-.show-hide{
-  position: absolute;
-  right: 15px;
-  top: 30%;
-  transform: translateY(-50%);
-}
-.show-hide i{
-  font-size: 19px;
-  color: #5f0000;
-  cursor: pointer;
-  display: none;
-}
-.show-hide i.hide:before{
-  content: '\f070';
-}
-input:valid ~ .show-hide i{
-  display: block;
-}
-
-.g-recaptcha-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 25px 0;
-}
-  </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="../style/log_style.css">
 </head>
 <body>
   <div class="wrapper">
-    <form action="../honeypot/admin.php" method="post" onsubmit="return validateCaptcha();">
+    <form id="loginForm" autocomplete="off">
       <h1>Login</h1>
       <div class="input-box">
         <input type="text" name="username" oninput="validateSus()" required>
@@ -164,7 +36,8 @@ input:valid ~ .show-hide i{
          </span>
       </div>
       <div class="g-recaptcha-container">
-            <div class="g-recaptcha" data-sitekey="6LemGMIpAAAAAGnGqqWJLvaHEvlsjdbgiqg843Fv"></div>
+            <div class="g-recaptcha" data-sitekey="6LemGMIpAAAAAGnGqqWJLvaHEvlsjdbgiqg843Fv" data-callback="validateCaptchaChange"></div>
+            <span class="invalid-captcha"></span>
         </div>
       <button type="submit" class="btn">Login</button>
       <div class="register-link">
@@ -172,32 +45,88 @@ input:valid ~ .show-hide i{
       </div>
     </form>
   </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const adminPassField = document.querySelector("input[name='password']");
-      const adminShowBtn = document.querySelector(".show-hide i");
+<div class="modal" id="errorMessageModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="errorMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-      adminShowBtn.addEventListener("click", function() {
-        if (adminPassField.type === "password") {
-          adminPassField.type = "text";
-          adminShowBtn.classList.add("hide");
+<script>
+      
+      function validateCaptchaChange() {
+        var response = grecaptcha.getResponse();
+        var invalidCaptchaElement = document.querySelector('.invalid-captcha');
+        if (response.length != 0) {
+          invalidCaptchaElement.textContent = '';
+        }
+      }
+        
+   $(document).ready(function() {
+      const adminPassField = $("input[name='password']");
+      const adminShowBtn = $(".show-hide i");
+
+      adminShowBtn.on("click", function() {
+        if (adminPassField.attr("type") === "password") {
+          adminPassField.attr("type", "text");
+          adminShowBtn.addClass("hide");
         } else {
-          adminPassField.type = "password";
-          adminShowBtn.classList.remove("hide");
+          adminPassField.attr("type", "password");
+          adminShowBtn.removeClass("hide");
         }
       });
-    });
 
-    function validateCaptcha() {
-      var response = grecaptcha.getResponse();
-      if (response.length === 0) {
-        alert('Please check the CAPTCHA to verify you are not a robot.');
-        return false;
+      function submitLoginForm() {
+        $.ajax({
+          type: 'POST',
+          url: '../honeypot/admin.php',
+          data: $('#loginForm').serialize(),
+          success: function(response) {
+            var data = JSON.parse(response);
+            if (data.error) {
+                $('#errorMessage').text(data.message);
+                $('#errorMessageModal').modal('show');
+            } else {
+               location.reload();
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
       }
-      return true;
-    }
-  
+      
+      $('#loginForm').on('submit', function(e) {
+          e.preventDefault();
+        var response = grecaptcha.getResponse();
+        var invalidCaptchaElement = document.querySelector('.invalid-captcha');
+        if (response.length === 0) {
+          invalidCaptchaElement.textContent = 'Please check the CAPTCHA to verify you are not a robot.';
+          return false;
+        }
+
+        submitLoginForm();
+      });
+      
+       $('#errorMessageModal').on('hidden.bs.modal', function (e) {
+        location.reload(); 
+      });
+    });
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
