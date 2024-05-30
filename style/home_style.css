@@ -1599,39 +1599,6 @@ form .input{
         padding: 10px;
     }
     
-    .chatbot-toggler {
-    right: 20px;
-    bottom: 20px;
-  }
-  .chatbot {
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    border-radius: 0;
-    width: 100%;
-  }
-  .chatbot .form {
-    height: 90%;
-    padding: 25px 15px 10px;
-  }
-  .chatbot .chat-input {
-    padding: 5px 15px;
-  }
-  .chatbot header span {
-    display: block;
-  }
-  
-  #refresh{
-      right: 50px;
-  }
-  
-  .tooltip{
-      display: none;
-  }
-  
-  .chatbot .form{
-    max-height: 590px;
-   }
   .form-popup {
         width: 95%;
     }
