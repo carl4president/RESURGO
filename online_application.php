@@ -33,6 +33,9 @@ if(isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Lady of the Sacred Heart College of Guimba, Inc.</title>
+    
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+      
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -55,7 +58,7 @@ if(isset($_GET['id'])) {
         <div class="online-application-form-content">
         <h2>Job Application</h2>
         <p>Please complete the form below to apply for a position with us.</p>
-        <form action="online_application_data.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <form id="applicationForm" autocomplete="off">
         <div class="input">
             <ul>
             <li id="full-name">
@@ -117,9 +120,7 @@ if(isset($_GET['id'])) {
                 <li id="email-address">
                 <h4>Email <span>*</span></h4>
                     <div class="email-input">
-                        <input type="email" name="email" id="email" placeholder="ex:name@gmail.com"
-                               pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                               title="Please enter a valid email address (e.g., name@gmail.com)">
+                        <input type="email" name="email" id="email" placeholder="ex:name@gmail.com" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address (e.g., name@gmail.com)">
                     </div>
 
                  </li>
@@ -191,119 +192,181 @@ if(isset($_GET['id'])) {
          </span> • All Rights Reserved</h4>
       </section>
     </footer>
-    <script>
-        
+    
+<div class="modal fade" id="successMessageModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: white;">Success</h5> <!-- Changed from Error to Success -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="successMessage" style="color: white;"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-                var endDate = new Date();
-                endDate.setFullYear(endDate.getFullYear() - 18);  
-                var startDate = new Date();
-                startDate.setFullYear(startDate.getFullYear() - 85); 
-                var startDateISOString = startDate.toISOString().split('T')[0];
-                var endDateISOString = endDate.toISOString().split('T')[0];
-                
-                var input = document.getElementById('birthdate');
-                input.setAttribute('min', startDateISOString);
-                input.setAttribute('max', endDateISOString);
-                
-              });
+<div class="modal fade" id="errorMessageModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #c73e1d;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: white;">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white;">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="errorMessage" style="color: white;"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            function validateContactInput(inputElement) {
-                const inputValue = inputElement.value;
-                const numericValue = inputValue.replace(/[^0-9]/g, "");
-                inputElement.value = numericValue;
-            }
-            
-        const FinputElement = document.getElementById("first_name");
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var endDate = new Date();
+    endDate.setFullYear(endDate.getFullYear() - 18);  
+    var startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 85); 
+    var startDateISOString = startDate.toISOString().split('T')[0];
+    var endDateISOString = endDate.toISOString().split('T')[0];
+    
+    var input = document.getElementById('birthdate');
+    input.setAttribute('min', startDateISOString);
+    input.setAttribute('max', endDateISOString);
+});
 
-             FinputElement.addEventListener("input", function() {
-            const inputValue = FinputElement.value;
-
-            const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
-
-            FinputElement.value = alphabeticValue;
-        });
-        const MinputElement = document.getElementById("middle_name");
-
-            MinputElement.addEventListener("input", function() {
-            const inputValue = MinputElement.value;
-
-            const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
-
-            MinputElement.value = alphabeticValue;
-            });
-            const LinputElement = document.getElementById("last_name");
-
-            LinputElement.addEventListener("input", function() {
-            const inputValue = LinputElement.value;
-
-            const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
-
-            LinputElement.value = alphabeticValue;
-            });
-
-            const formFileInput = document.getElementById("real-file");
-
-            formFileInput.addEventListener("change", function () {
-                const allowedExtension = "pdf";
-                const fileName = this.value.toLowerCase();
-
-                if (!fileName.endsWith("." + allowedExtension)) {
-                    alert("Please select a valid PDF file.");
-                    this.value = ""; 
-                }
-            });
-            
-
-
-        function validateForm() {
-            
-            const firstName = document.getElementById("first_name").value;
-            const middleName = document.getElementById("middle_name").value;
-            const lastName = document.getElementById("last_name").value;
-            const street = document.getElementById("street").value;
-            const birthdate = document.getElementById("birthdate").value;
-            const city = document.getElementById("city").value;
-            const state_province = document.getElementById("state_province").value;
-            const postal_zip_code = document.getElementById("postal_zip_code").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-            const formFile = document.getElementById("real-file").value;
-            if (firstName === "" || middleName === "" || lastName === "" || street === "" 
-            || birthdate === "" || city === "" || state_province === "" || postal_zip_code === "" 
-            || email === "" || phone === "" || formFile === "") {
-                alert("All data are required to fill up.");
-                return false;
-            }
-            else if (firstName.length < 2){
-                alert("First Name must be atleast 2 characters long. Please Try Again.");
-                return false;
-            }
-
-            else if (middleName.length < 2){
-                alert("Middle Name must be atleast 2 characters long. Please Try Again.");
-                return false;
-            }
-
-            else if (lastName.length < 2){
-                alert("Last Name must be atleast 2 characters long. Please Try Again.");
-                return false;
-            } else if (!/^\d{11}$/.test(phone)) {
-                alert("Phone number must be exactly 11 digits long and contain only numbers. Please try again.");
-                return false;
-            } else if (!/^0[1-9]\d{9}$/.test(phone)) {
-                alert("Invalid phone number format. Please enter a valid 11-digit phone number starting with 0.");
-                return false;
-            }
-        
-            return true;
+function validateContactInput(inputElement) {
+    const inputValue = inputElement.value;
+    const numericValue = inputValue.replace(/[^0-9]/g, "");
+    inputElement.value = numericValue;
 }
 
+const FinputElement = document.getElementById("first_name");
+FinputElement.addEventListener("input", function() {
+    const inputValue = FinputElement.value;
+    const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
+    FinputElement.value = alphabeticValue;
+});
 
-        
-      </script>
-      <script src="script/input_file_script.js"></script>
+const MinputElement = document.getElementById("middle_name");
+MinputElement.addEventListener("input", function() {
+    const inputValue = MinputElement.value;
+    const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
+    MinputElement.value = alphabeticValue;
+});
+
+const LinputElement = document.getElementById("last_name");
+LinputElement.addEventListener("input", function() {
+    const inputValue = LinputElement.value;
+    const alphabeticValue = inputValue.replace(/[^a-zA-Z\s]+/g, "");
+    LinputElement.value = alphabeticValue;
+});
+
+const formFileInput = document.getElementById("real-file");
+formFileInput.addEventListener("change", function () {
+    const allowedExtension = "pdf";
+    const fileName = this.value.toLowerCase();
+    if (!fileName.endsWith("." + allowedExtension)) {
+        alert("Please select a valid PDF file.");
+        this.value = ""; 
+    }
+});
+
+function validateForm() {
+    const firstName = document.getElementById("first_name").value;
+    const middleName = document.getElementById("middle_name").value;
+    const lastName = document.getElementById("last_name").value;
+    const street = document.getElementById("street").value;
+    const birthdate = document.getElementById("birthdate").value;
+    const city = document.getElementById("city").value;
+    const state_province = document.getElementById("state_province").value;
+    const postal_zip_code = document.getElementById("postal_zip_code").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const formFile = document.getElementById("real-file").value;
+    
+    if (firstName === "" || middleName === "" || lastName === "" || street === "" || birthdate === "" || city === "" || state_province === "" || postal_zip_code === "" || email === "" || phone === "" || formFile === "") {
+        alert("All data are required to fill up.");
+        return false;
+    } else if (firstName.length < 2){
+        alert("First Name must be at least 2 characters long. Please Try Again.");
+        return false;
+    } else if (middleName.length < 2){
+        alert("Middle Name must be at least 2 characters long. Please Try Again.");
+        return false;
+    } else if (lastName.length < 2){
+        alert("Last Name must be at least 2 characters long. Please Try Again.");
+        return false;
+    } else if (!/^\d{11}$/.test(phone)) {
+        alert("Phone number must be exactly 11 digits long and contain only numbers. Please try again.");
+        return false;
+    } else if (!/^0[1-9]\d{9}$/.test(phone)) {
+        alert("Invalid phone number format. Please enter a valid 11-digit phone number starting with 0.");
+        return false;
+    }
+
+    return true;
+}
+
+$('#applicationForm').submit(function(event) {
+    event.preventDefault();
+    
+    if (validateForm()) {
+        var formData = new FormData(this);
+        $.ajax({
+            url: 'online_application_data.php',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.error) {
+                    $('#errorMessage').text(data.message);
+                    $('#errorMessageModal').modal('show');
+                } else {
+                    $('#successMessage').text(data.message);
+                    $('#successMessageModal').modal('show');
+                }
+            },
+            error: function(xhr, status, error) {
+                var data = JSON.parse(xhr.responseText);
+                if (data.error) {
+                    $('#errorMessage').text(data.message);
+                    $('#errorMessageModal').modal('show');
+                } else {
+                    location.reload();
+                }
+            }
+        });
+    }
+});
+
+
+$('#successMessageModal').on('hidden.bs.modal', function (e) {
+    
+    window.location.href = 'index.php'; 
+});
+
+$('#errorMessageModal').on('hidden.bs.modal', function (e) {
+    location.reload(); 
+});
+</script>
+
+<script src="script/input_file_script.js"></script>
       
 </body>
 </html>

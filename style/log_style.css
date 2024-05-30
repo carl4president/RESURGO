@@ -134,6 +134,7 @@ input:valid ~ .show-hide i{
     margin: 0 20px;
 }
 
+
  @media only screen and (max-width: 360px){
 
     .wrapper {

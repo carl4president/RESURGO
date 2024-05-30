@@ -270,12 +270,8 @@ body.show-chatbot .chatbot {
             document.getElementById('send-btn').click();  
         }
     });
-<<<<<<< HEAD
 </script>
 <script>
-=======
-    
->>>>>>> 43e6c65c5e0cd605931174242e701f9d84362c7d
 $(document).ready(function(){
     
     

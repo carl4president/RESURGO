@@ -49,20 +49,20 @@
   </div>
   
   
-<div class="modal" id="errorMessageModal" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="errorMessageModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: #c73e1d;">
             <div class="modal-header">
-                <h5 class="modal-title">Error</h5>
+                <h5 class="modal-title" style="color: white;">Error</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true" style="color: white;">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <span id="errorMessage"></span>
+                <span id="errorMessage" style="color: white;"></span>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

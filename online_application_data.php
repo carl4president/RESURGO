@@ -18,9 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $resume = $_FILES['resume']['name'];
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<script>alert('Invalid email format');</script>";
-        echo "<script>window.location.replace('index.html');</script>";
-        exit(); 
+        $output['error'] = true;
+        $output['message'] = 'Invalid email format';
     }
 
     $applicant_id = generateRandomApplicantID();
@@ -34,8 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($existingApplicant) {
         
-        echo "<script>alert('Application already submitted.');</script>";
-        echo "<script>window.location.replace('application_portal/vacancy/index.php');</script>";
+        $output['error'] = true;
+        $output['message'] = 'Application already submitted.';
+        
     } else {
         $resume = $_FILES['resume']['name'];
         $position_id = isset($_POST['position_id']) ? $_POST['position_id'] : null;
@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->execute();
 
         if ($result) {
-            echo "<script>alert('Application submitted successfully.')</script>";
-            echo "<script>window.location.replace('index.html');</script>";
+            $output['error'] = false;
+            $output['message'] = 'Application submitted successfully.';
         } else {
             echo 'Error executing the statement: ' . $stmt->error;
         }
@@ -76,6 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
+
+echo json_encode($output);
 
 function generateRandomApplicantID($length = 7)
 {
